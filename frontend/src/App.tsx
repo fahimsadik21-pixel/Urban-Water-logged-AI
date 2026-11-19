@@ -42,12 +42,33 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<MainTabType>('overview');
   const [backendConnected, setBackendConnected] = useState(true);
   const [mapError, setMapError] = useState<string | null>(null);
-  const [hotspots, setHotspots] = useState<HotspotFeature[]>([]);
-  const [infrastructure, setInfrastructure] = useState<InfrastructureFeature[]>([]);
-  const [drains, setDrains] = useState<DrainChannel[]>([]);
+  const [hotspots, setHotspots] = useState<HotspotFeature[]>(() => {
+    try {
+      const raw = typeof window !== 'undefined' ? sessionStorage.getItem('uwai_map_layers') : null;
+      return raw ? JSON.parse(raw).hotspots?.features ?? [] : [];
+    } catch {
+      return [];
+    }
+  });
+  const [infrastructure, setInfrastructure] = useState<InfrastructureFeature[]>(() => {
+    try {
+      const raw = typeof window !== 'undefined' ? sessionStorage.getItem('uwai_map_layers') : null;
+      return raw ? JSON.parse(raw).critical_infrastructure?.features ?? [] : [];
+    } catch {
+      return [];
+    }
+  });
+  const [drains, setDrains] = useState<DrainChannel[]>(() => {
+    try {
+      const raw = typeof window !== 'undefined' ? sessionStorage.getItem('uwai_map_layers') : null;
+      return raw ? JSON.parse(raw).drains ?? [] : [];
+    } catch {
+      return [];
+    }
+  });
   const [selectedHotspot, setSelectedHotspot] = useState<HotspotFeature | null>(null);
   const [incidents, setIncidents] = useState<IncidentRecord[]>([]);
-  const [syncCadence, setSyncCadence] = useState(10);
+  const [syncCadence, setSyncCadence] = useState(15);
   const [isSyncing, setIsSyncing] = useState(false);
   const [lastSyncedTime, setLastSyncedTime] = useState('—');
 
@@ -169,14 +190,29 @@ export default function App() {
   const fetchMapLayers = useCallback(async () => {
     try {
       const data = await apiFetch<MapLayersResponse>('/api/v1/map/layers');
-      setHotspots(data?.hotspots?.features ?? []);
-      setInfrastructure(data?.critical_infrastructure?.features ?? []);
-      setDrains(data?.drains ?? []);
-      setMapError(null);
-      setBackendConnected(true);
+      if (data?.hotspots?.features) {
+        setHotspots(data.hotspots.features);
+        setInfrastructure(data.critical_infrastructure?.features ?? []);
+        setDrains(data.drains ?? []);
+        setMapError(null);
+        setBackendConnected(true);
+        try {
+          if (typeof window !== 'undefined') {
+            sessionStorage.setItem('uwai_map_layers', JSON.stringify(data));
+          }
+        } catch {
+          // ignore storage quota error
+        }
+      }
     } catch (err) {
       console.warn('fetchMapLayers failed:', err);
-      setMapError(lang === 'bn' ? 'মানচিত্রের তথ্য এখন পাওয়া যাচ্ছে না। কিছুক্ষণ পর আবার হালনাগাদ করুন।' : 'Map data is temporarily unavailable. Please refresh in a moment.');
+      // Only set error if no map features exist
+      setHotspots((prev) => {
+        if (prev.length === 0) {
+          setMapError(lang === 'bn' ? 'মানচিত্রের তথ্য এখন পাওয়া যাচ্ছে না। কিছুক্ষণ পর আবার হালনাগাদ করুন।' : 'Map data is temporarily unavailable. Please refresh in a moment.');
+        }
+        return prev;
+      });
     }
   }, [lang]);
 

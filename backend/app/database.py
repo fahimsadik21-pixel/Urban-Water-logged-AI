@@ -2,21 +2,30 @@
 
 from __future__ import annotations
 
-from typing import Generator
+from typing import Generator, Any
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
+from sqlalchemy.pool import NullPool
 
 from backend.app.config import settings
 
-connect_args = {}
+engine_kwargs: dict[str, Any] = {
+    "echo": False,
+    "future": True,
+}
+
 if settings.DATABASE_URL.startswith("sqlite"):
-    connect_args["check_same_thread"] = False
+    engine_kwargs["connect_args"] = {"check_same_thread": False, "timeout": 15}
+    engine_kwargs["poolclass"] = NullPool
+else:
+    engine_kwargs["pool_size"] = 20
+    engine_kwargs["max_overflow"] = 40
+    engine_kwargs["pool_timeout"] = 10
+    engine_kwargs["pool_recycle"] = 1800
 
 engine = create_engine(
     settings.DATABASE_URL,
-    connect_args=connect_args,
-    echo=False,
-    future=True,
+    **engine_kwargs,
 )
 
 SessionLocal = sessionmaker(

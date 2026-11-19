@@ -40,12 +40,14 @@ class MLInferenceService:
     _instance: MLInferenceService | None = None
     _model: Any = None
     _model_path: Path
+    _cache: dict[tuple, dict[str, Any]] = {}
 
     def __init__(self) -> None:
         self._model_path = (
             settings.BASE_DIR / "backend" / "app" / "models" / "saved_models" / "severity_classifier.joblib"
         )
         self._load_model()
+        self._cache = {}
 
     @classmethod
     def get_instance(cls) -> MLInferenceService:
@@ -96,6 +98,20 @@ class MLInferenceService:
             if k.startswith("true_"):
                 raise ValueError(f"Target leakage violation: {k}")
 
+        cache_key = (
+            round(feature_dict["water_level_cm"], 1),
+            round(feature_dict["rainfall_mm_5min"], 1),
+            round(feature_dict["elevation_m"], 1),
+            round(feature_dict["slope_percent"], 1),
+            round(feature_dict["impervious_ratio"], 2),
+            round(feature_dict["runoff_coefficient"], 2),
+            round(feature_dict["drainage_capacity_mm_5min"], 1),
+            round(feature_dict["base_blockage_ratio"], 2),
+            round(feature_dict["ponding_factor"], 1),
+        )
+        if cache_key in self._cache:
+            return self._cache[cache_key]
+
         df = pd.DataFrame([feature_dict])[FEATURE_COLUMNS]
 
         if self._model is not None:
@@ -114,7 +130,7 @@ class MLInferenceService:
         # Generate Explainable AI (XAI) feature attributions
         xai = self._generate_xai_explanation(feature_dict, pred_class, predicted_prob, prob_dict)
 
-        return {
+        result = {
             "model_version": "HistGradientBoosting-v1.0-benchmark",
             "predicted_severity": pred_class,
             "confidence_score": round(predicted_prob, 3),
@@ -125,6 +141,10 @@ class MLInferenceService:
             "explanation_bn": xai["explanation_bn"],
             "key_drivers": xai["key_drivers"],
         }
+        if len(self._cache) > 2000:
+            self._cache.clear()
+        self._cache[cache_key] = result
+        return result
 
     def _heuristic_fallback(self, feat: dict[str, float]) -> tuple[str, dict[str, float], float]:
         depth = feat["water_level_cm"]

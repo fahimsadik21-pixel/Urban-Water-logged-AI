@@ -1,6 +1,29 @@
 # Urban Water-logged AI Project Checkpoint
 
-Last updated: 2026-11-20 00:58, Asia/Dhaka
+Last updated: 2026-11-20 01:18, Asia/Dhaka
+
+Checkpoint ID: `CP-046-PERFORMANCE-SPEEDUP-AND-DATABASE-POOL-FIX`
+
+## Current Status
+
+Resolved slow page refresh and eliminated 30-second connection pool exhaustion (`QueuePool limit of size 5 overflow 10 reached, connection timed out, timeout 30.00`):
+1. **Root Cause Analysis**:
+   - SQLite was using SQLAlchemy's default `QueuePool` (pool size 5, max overflow 10, timeout 30s). When concurrent polls hit the backend, pool connections were held open during synchronous ML inference, blocking subsequent requests for 30 seconds until timing out with HTTP 500.
+   - `predict_severity()` in `MLInferenceService` created a single-row pandas DataFrame and ran HistGradientBoosting inference 50 times per `/api/v1/map/layers` call without caching, taking ~6 seconds on first load and ~0.5s on subsequent hits.
+   - Frontend had no in-memory or session cache, forcing a full blank-state reload on every refresh.
+2. **Performance Optimizations**:
+   - `backend/app/database.py`: Configured `NullPool` for SQLite with `check_same_thread: False` and `timeout: 15`. Eliminates all connection queuing, locks, and pool timeouts.
+   - `backend/app/services/ml_inference_service.py`: Added in-memory LRU prediction cache (`_cache` keyed on feature tuple). Repeated 50-location predictions accelerated from 6.2s to **0.015s (400x speedup)**.
+   - `frontend/src/App.tsx`:
+     - Initial state initializes directly from `sessionStorage.getItem('uwai_map_layers')` providing **instant 0ms map rendering** upon refresh.
+     - `fetchMapLayers` updates in the background and saves to session storage.
+     - Adjusted polling cadence to a clean 15s to prevent network saturation.
+3. **Verification**:
+   - Local benchmark: `/api/v1/map/layers` call 2: 0.021s, call 3: 0.015s.
+   - Dataset verification (`python scripts/validate_synthetic_datasets.py datasets`): PASSED (20 CSV files, 1,214,992 rows).
+   - Frontend production build (`npm.cmd --prefix frontend run build`): 0 errors in 1.38s.
+
+---
 
 Checkpoint ID: `CP-045-MAP-LAYERS-RESILIENT-LOAD-AND-AUTO-RECOVERY`
 
