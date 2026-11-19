@@ -97,7 +97,7 @@ export function IncidentIntelligenceView({ incidents, hotspots, selectedLocation
     setLoading(true);
     setError(null);
     apiFetch<IncidentDetailResponse>(`/api/v1/incidents/${incident.incident_id}`)
-      .then((response) => { if (active) setDetail(response); })
+      .then((response: IncidentDetailResponse) => { if (active) setDetail(response); })
       .catch(() => { if (active) setError(bn ? 'এই ঘটনার বিস্তারিত এখন পাওয়া যাচ্ছে না।' : 'Incident detail is temporarily unavailable.'); })
       .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };

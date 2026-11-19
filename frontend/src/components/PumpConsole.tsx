@@ -52,8 +52,8 @@ export const PumpConsole: React.FC = () => {
       const data = await apiFetch<PumpStationRecord[]>('/api/v1/pumps/');
       setPumps((prevPumps) => {
         if (prevPumps.length === 0) return data;
-        return data.map((d) => {
-          const current = prevPumps.find((p) => p.pump_id === d.pump_id);
+        return data.map((d: PumpStationRecord) => {
+          const current = prevPumps.find((p: PumpStationRecord) => p.pump_id === d.pump_id);
           if (current && current.pump_state === 'ON') {
             return {
               ...d,
@@ -68,7 +68,7 @@ export const PumpConsole: React.FC = () => {
         });
       });
       setSelectedPumpId((prev) => {
-        if (prev && data.some((p) => p.pump_id === prev)) {
+        if (prev && data.some((p: PumpStationRecord) => p.pump_id === prev)) {
           return prev;
         }
         return data.length > 0 ? data[0].pump_id : null;

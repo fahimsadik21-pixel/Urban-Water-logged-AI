@@ -1,6 +1,21 @@
 # Urban Water-logged AI Project Checkpoint
 
-Last updated: 2026-11-20 00:15, Asia/Dhaka
+Last updated: 2026-11-20 00:22, Asia/Dhaka
+
+Checkpoint ID: `CP-043-UNIGNORE-FRONTEND-LIB-AND-STRICT-TYPE-FIX`
+
+## Current Status
+
+Successfully resolved Vercel build compilation failure (`Cannot find module './lib/api'` and implicit `any` type errors):
+1. **Unignored `frontend/src/lib/` in `.gitignore`**: Fixed `.gitignore` where an unanchored `lib/` pattern unintentionally ignored `frontend/src/lib/api.ts`. Added explicit exception `!frontend/src/lib/` and anchored Python C-extension directory to `/lib/`.
+2. **Strict TypeScript Typing**:
+   - `CitizenReportingPortal.tsx`: Explicitly typed `(data: any[])` and `(err: unknown)` in dynamic locations fetch.
+   - `IncidentIntelligenceView.tsx`: Explicitly typed `(response: IncidentDetailResponse)` in incident detail fetch.
+   - `PumpConsole.tsx`: Explicitly typed `(d: PumpStationRecord)` and `(p: PumpStationRecord)` in pump status updater.
+3. **Frontend Verification**: `npm.cmd --prefix frontend run build` completed with 0 errors in 1.50s.
+4. **Pushed to GitHub**: Committed and pushed to `main` branch on GitHub.
+
+---
 
 Checkpoint ID: `CP-042-VERCEL-BUILD-FIX-AND-RENDER-CONNECT`
 

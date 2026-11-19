@@ -110,12 +110,12 @@ export const CitizenReportingPortal: React.FC<{ showOperationsFeed?: boolean }> 
   // Fetch dynamic verified monitored locations from backend
   useEffect(() => {
     apiFetch<any[]>('/api/v1/reports/locations')
-      .then((data) => {
+      .then((data: any[]) => {
         if (Array.isArray(data) && data.length > 0) {
           setMonitoredLocations(data);
         }
       })
-      .catch((err) => {
+      .catch((err: unknown) => {
         console.warn('Could not fetch dynamic locations, using canonical fallback:', err);
       });
   }, []);
