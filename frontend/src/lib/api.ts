@@ -1,7 +1,9 @@
-const rawBase =
-  import.meta.env.VITE_API_BASE_URL ||
-  (import.meta.env.PROD ? 'https://urban-water-logged-ai-backend.onrender.com' : '');
-export const API_BASE_URL = rawBase.replace(/\/+$/, '');
+const RENDER_BACKEND = 'https://urban-water-logged-ai-backend.onrender.com';
+const configuredBase = import.meta.env.VITE_API_BASE_URL;
+export const API_BASE_URL =
+  typeof configuredBase === 'string' && configuredBase.trim().length > 0
+    ? configuredBase.replace(/\/+$/, '')
+    : '';
 
 export class ApiError extends Error {
   readonly status: number;
@@ -26,12 +28,47 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise
     headers.set('Authorization', `Bearer ${token}`);
   }
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  const targetUrl = API_BASE_URL ? `${API_BASE_URL}${cleanPath}` : cleanPath;
-  const response = await fetch(targetUrl, {
-    ...init,
-    headers,
-    credentials: 'include',
-  });
+
+  // Primary URL: uses reverse proxy (relative) or configured base URL
+  const primaryUrl = API_BASE_URL ? `${API_BASE_URL}${cleanPath}` : cleanPath;
+  // Fallback URL: direct Render cloud backend if primary was relative, or relative if primary was explicit
+  const fallbackUrl = API_BASE_URL ? cleanPath : `${RENDER_BACKEND}${cleanPath}`;
+
+  let response: Response;
+  try {
+    response = await fetch(primaryUrl, {
+      ...init,
+      headers,
+      credentials: 'include',
+    });
+    // In case edge proxy returned gateway timeout or 502/503 during cold-wake, try fallback
+    if (!response.ok && (response.status === 502 || response.status === 503 || response.status === 504) && primaryUrl !== fallbackUrl) {
+      try {
+        const altResponse = await fetch(fallbackUrl, {
+          ...init,
+          headers,
+          credentials: 'include',
+        });
+        if (altResponse.ok) {
+          response = altResponse;
+        }
+      } catch {
+        // keep original response
+      }
+    }
+  } catch (err) {
+    // Network failure (CORS block, DNS, or offline proxy) -> auto fallback
+    if (primaryUrl !== fallbackUrl) {
+      response = await fetch(fallbackUrl, {
+        ...init,
+        headers,
+        credentials: 'include',
+      });
+    } else {
+      throw err;
+    }
+  }
+
   if (!response.ok) {
     const payload = await response.json().catch(() => null);
     let errorMessage = `Request failed with HTTP ${response.status}`;

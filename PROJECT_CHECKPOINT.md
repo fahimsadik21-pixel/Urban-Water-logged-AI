@@ -1,6 +1,29 @@
 # Urban Water-logged AI Project Checkpoint
 
-Last updated: 2026-11-20 00:36, Asia/Dhaka
+Last updated: 2026-11-20 00:58, Asia/Dhaka
+
+Checkpoint ID: `CP-045-MAP-LAYERS-RESILIENT-LOAD-AND-AUTO-RECOVERY`
+
+## Current Status
+
+Successfully resolved empty map layers and map error banner (`Map data is temporarily unavailable`):
+1. **Root Cause Analysis**:
+   - The user logged in during the 2-minute container restart window on Render. When `fetchMapLayers()` ran on mount during that startup window, it caught the initial cold connection error and set `mapError`, leaving `hotspots`, `infrastructure`, and `drains` empty arrays.
+   - `apiFetch` in `frontend/src/lib/api.ts` did not have dual-path automatic fallback (e.g., if direct cross-origin failed, fallback to Vercel reverse proxy, or vice-versa).
+2. **Frontend Resilience Upgrades**:
+   - Upgraded `frontend/src/lib/api.ts` with dual-path resilience: Automatically tries relative reverse proxy first; if cold-start 502/503/504 or network failure occurs, automatically falls back to direct Render (`https://urban-water-logged-ai-backend.onrender.com`).
+   - In `frontend/src/App.tsx`:
+     - Added safe null-chaining: `setHotspots(data?.hotspots?.features ?? [])`, `setInfrastructure(...)`, and `setDrains(...)`.
+     - Added auto-recovery timer: If `hotspots` is empty on mount (due to cold-boot latency), automatically retries sync after 2.0s without requiring user action.
+     - Added interactive "পুনরায় লোড করুন" / "Retry Load" button directly inside the `mapError` banner.
+3. **Verification**:
+   - Full live API flow tested end-to-end through Vercel's production proxy:
+     - Login: 200 OK
+     - Map layers: 200 OK (50 hotspots, 30 hospitals, 15 drains)
+     - Incidents: 200 OK (50 active incident records)
+   - Frontend build (`npm.cmd --prefix frontend run build`): 0 errors in 1.49s.
+
+---
 
 Checkpoint ID: `CP-044-BACKEND-AUTH-500-FIX-AND-VERCEL-PROXY-INTEGRATION`
 

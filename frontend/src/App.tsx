@@ -169,12 +169,13 @@ export default function App() {
   const fetchMapLayers = useCallback(async () => {
     try {
       const data = await apiFetch<MapLayersResponse>('/api/v1/map/layers');
-      setHotspots(data.hotspots.features ?? []);
-      setInfrastructure(data.critical_infrastructure.features ?? []);
-      setDrains(data.drains ?? []);
+      setHotspots(data?.hotspots?.features ?? []);
+      setInfrastructure(data?.critical_infrastructure?.features ?? []);
+      setDrains(data?.drains ?? []);
       setMapError(null);
       setBackendConnected(true);
-    } catch {
+    } catch (err) {
+      console.warn('fetchMapLayers failed:', err);
       setMapError(lang === 'bn' ? 'মানচিত্রের তথ্য এখন পাওয়া যাচ্ছে না। কিছুক্ষণ পর আবার হালনাগাদ করুন।' : 'Map data is temporarily unavailable. Please refresh in a moment.');
     }
   }, [lang]);
@@ -183,7 +184,7 @@ export default function App() {
     if (!user || user.role === 'civic') return;
     try {
       const data = await apiFetch<IncidentRecord[]>('/api/v1/incidents/');
-      setIncidents(data);
+      setIncidents(data ?? []);
     } catch {
       // The map can still show the last trusted layer data if incidents are unavailable.
     }
@@ -204,6 +205,15 @@ export default function App() {
     const interval = window.setInterval(() => void handleManualSync(), syncCadence * 1000);
     return () => window.clearInterval(interval);
   }, [activeTab, allowedTabs, handleManualSync, syncCadence, user]);
+
+  // Automatic retry if initial map layers were empty during cold boot
+  useEffect(() => {
+    if (!user || hotspots.length > 0) return;
+    const retryTimer = window.setTimeout(() => {
+      void handleManualSync();
+    }, 2000);
+    return () => window.clearTimeout(retryTimer);
+  }, [user, hotspots.length, handleManualSync]);
 
   // Merge simulation map projection dynamically over production map
   const effectiveHotspots = useMemo(() => {
@@ -320,8 +330,20 @@ export default function App() {
         />
         <main className="min-w-0 flex-1 overflow-y-auto bg-[#F5F0E6]">
           {mapError && (
-            <div className="mx-4 mt-4 flex max-w-7xl items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900 sm:mx-6 lg:mx-8">
-              <TriangleAlert className="h-4 w-4 shrink-0" /> {mapError}
+            <div className="mx-4 mt-4 flex max-w-7xl items-center justify-between gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900 sm:mx-6 lg:mx-8">
+              <div className="flex items-center gap-2">
+                <TriangleAlert className="h-4 w-4 shrink-0 text-amber-600" />
+                <span>{mapError}</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => void handleManualSync()}
+                disabled={isSyncing}
+                className="flex items-center gap-1 rounded bg-[#173D35] px-2.5 py-1 text-xs font-semibold text-white hover:bg-[#23584B] transition shadow-sm cursor-pointer"
+              >
+                <RefreshCw className={`h-3 w-3 ${isSyncing ? 'animate-spin' : ''}`} />
+                {lang === 'bn' ? 'পুনরায় লোড করুন' : 'Retry Load'}
+              </button>
             </div>
           )}
           {activeTab === 'overview' && (
