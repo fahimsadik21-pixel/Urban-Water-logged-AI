@@ -12,6 +12,7 @@ export interface AuthUser {
 export interface SessionResponse {
   user: AuthUser;
   expires_at: string;
+  access_token?: string;
 }
 
 export type SeverityLevel = "Normal" | "Watch" | "Waterlogged" | "Severe";

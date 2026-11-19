@@ -102,4 +102,5 @@ class UserResponse(BaseModel):
 class SessionResponse(BaseModel):
     user: UserResponse
     expires_at: str
+    access_token: str | None = None
 

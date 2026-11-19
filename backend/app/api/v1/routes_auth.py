@@ -175,16 +175,21 @@ def login(payload: LoginRequest, request: Request, response: Response, db: Sessi
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Account is not authorized for this portal")
 
     token, auth_session = create_session(db, user)
+    is_cross_site = settings.ENVIRONMENT == "production" or os.getenv("RENDER") is not None or settings.AUTH_COOKIE_SECURE
     response.set_cookie(
         key=settings.AUTH_COOKIE_NAME,
         value=token,
         max_age=int(timedelta(hours=settings.AUTH_SESSION_HOURS).total_seconds()),
         httponly=True,
-        secure=settings.AUTH_COOKIE_SECURE,
-        samesite="lax",
+        secure=is_cross_site,
+        samesite="none" if is_cross_site else "lax",
         path="/",
     )
-    return SessionResponse(user=UserResponse.model_validate(user), expires_at=auth_session.expires_at.isoformat() + "Z")
+    return SessionResponse(
+        user=UserResponse.model_validate(user),
+        expires_at=auth_session.expires_at.isoformat() + "Z",
+        access_token=token,
+    )
 
 
 @router.get("/me", response_model=UserResponse)

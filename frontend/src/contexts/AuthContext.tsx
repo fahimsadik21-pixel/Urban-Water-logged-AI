@@ -63,6 +63,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         method: 'POST',
         body: JSON.stringify({ username, password, portal }),
       });
+      if (session.access_token) {
+        localStorage.setItem('uwai_token', session.access_token);
+      }
       setUser(session.user);
     } catch (err: any) {
       if (err?.message?.includes('not authorized for this portal')) {
@@ -73,6 +76,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               method: 'POST',
               body: JSON.stringify({ username, password, portal: altPortal }),
             });
+            if (altSession.access_token) {
+              localStorage.setItem('uwai_token', altSession.access_token);
+            }
             setUser(altSession.user);
             return;
           } catch {
@@ -141,6 +147,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       await apiFetch<void>('/api/v1/auth/logout', { method: 'POST' });
     } finally {
+      localStorage.removeItem('uwai_token');
       setUser(null);
     }
   }, []);
