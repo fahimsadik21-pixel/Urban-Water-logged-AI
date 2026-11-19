@@ -1,6 +1,32 @@
 # Urban Water-logged AI Project Checkpoint
 
-Last updated: 2026-11-20 00:22, Asia/Dhaka
+Last updated: 2026-11-20 00:36, Asia/Dhaka
+
+Checkpoint ID: `CP-044-BACKEND-AUTH-500-FIX-AND-VERCEL-PROXY-INTEGRATION`
+
+## Current Status
+
+Successfully resolved the "Failed to fetch" login failure on Vercel and Render deployment:
+1. **Root Cause Analysis**:
+   - `AttributeError: 'Settings' object has no attribute 'ENVIRONMENT'` in `routes_auth.py` and missing `import os` caused POST `/api/v1/auth/login` to crash with HTTP 500.
+   - In FastAPI/Starlette, unhandled 500 exceptions fall outside standard CORS middleware and are returned without `Access-Control-Allow-Origin` headers, causing the browser to reject the fetch with `TypeError: Failed to fetch`.
+   - `LoginRequest.portal` had a default value of `"civic"`, which rejected non-civic role logins with 403 Forbidden when portal was omitted.
+   - `frontend/src/lib/api.ts` could create double slashes (`//api/v1/...`) if `VITE_API_BASE_URL` included a trailing slash.
+2. **Backend Fixes**:
+   - Added `ENVIRONMENT: str = os.getenv("ENVIRONMENT", "production" if os.getenv("RENDER") else "development")` to `backend/app/config.py`.
+   - Added `import os` to `backend/app/api/v1/routes_auth.py` and defensive `getattr(settings, "ENVIRONMENT", "development")`.
+   - Changed `portal: str | None = None` in `backend/app/schemas/auth_schemas.py`.
+   - Added global catch-all exception handler in `backend/app/main.py` ensuring all 500 responses always carry valid CORS headers.
+3. **Frontend & Proxy Fixes**:
+   - In `frontend/src/lib/api.ts`: Stripped trailing slashes with `.replace(/\/+$/, '')` and normalized path prefixes.
+   - In `vercel.json`: Added edge reverse-proxy rewrites for `/api/(.*)`, `/health`, `/docs`, and `/openapi.json` to `https://urban-water-logged-ai-backend.onrender.com`.
+   - In `App.tsx` and `IoTCameraFleetView.tsx`: Converted raw `fetch` calls to `apiFetch`.
+4. **Verification**:
+   - `npm.cmd --prefix frontend run build` completed with 0 errors in 1.51s.
+   - `python scripts/validate_synthetic_datasets.py datasets` PASSED (20 CSV files, 1,214,992 rows).
+   - `python -m pytest backend/tests/test_auth_rbac.py` passed all 5 test cases.
+
+---
 
 Checkpoint ID: `CP-043-UNIGNORE-FRONTEND-LIB-AND-STRICT-TYPE-FIX`
 

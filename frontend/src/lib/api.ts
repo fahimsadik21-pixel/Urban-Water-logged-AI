@@ -1,6 +1,7 @@
-export const API_BASE_URL =
+const rawBase =
   import.meta.env.VITE_API_BASE_URL ||
   (import.meta.env.PROD ? 'https://urban-water-logged-ai-backend.onrender.com' : '');
+export const API_BASE_URL = rawBase.replace(/\/+$/, '');
 
 export class ApiError extends Error {
   readonly status: number;
@@ -24,7 +25,9 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise
   if (token && !headers.has('Authorization')) {
     headers.set('Authorization', `Bearer ${token}`);
   }
-  const response = await fetch(`${API_BASE_URL}${path}`, {
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  const targetUrl = API_BASE_URL ? `${API_BASE_URL}${cleanPath}` : cleanPath;
+  const response = await fetch(targetUrl, {
     ...init,
     headers,
     credentials: 'include',

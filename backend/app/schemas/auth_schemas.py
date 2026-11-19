@@ -36,7 +36,7 @@ class UsernameMixin(BaseModel):
 
 class LoginRequest(UsernameMixin):
     password: str = Field(min_length=1, max_length=256)
-    portal: str | None = "civic"
+    portal: str | None = None
 
 
 class CivicRegistrationRequest(UsernameMixin):

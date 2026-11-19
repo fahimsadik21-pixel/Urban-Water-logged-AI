@@ -157,10 +157,9 @@ export default function App() {
 
   const checkHealth = useCallback(async () => {
     try {
-      const response = await fetch('/health', { credentials: 'include' });
-      const healthy = response.ok;
-      setBackendConnected(healthy);
-      return healthy;
+      await apiFetch<{ status: string }>('/health');
+      setBackendConnected(true);
+      return true;
     } catch {
       setBackendConnected(false);
       return false;
@@ -169,9 +168,7 @@ export default function App() {
 
   const fetchMapLayers = useCallback(async () => {
     try {
-      const response = await fetch('/api/v1/map/layers', { credentials: 'include' });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const data: MapLayersResponse = await response.json();
+      const data = await apiFetch<MapLayersResponse>('/api/v1/map/layers');
       setHotspots(data.hotspots.features ?? []);
       setInfrastructure(data.critical_infrastructure.features ?? []);
       setDrains(data.drains ?? []);
@@ -185,9 +182,8 @@ export default function App() {
   const fetchIncidents = useCallback(async () => {
     if (!user || user.role === 'civic') return;
     try {
-      const response = await fetch('/api/v1/incidents/', { credentials: 'include' });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      setIncidents(await response.json());
+      const data = await apiFetch<IncidentRecord[]>('/api/v1/incidents/');
+      setIncidents(data);
     } catch {
       // The map can still show the last trusted layer data if incidents are unavailable.
     }

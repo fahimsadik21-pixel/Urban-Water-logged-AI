@@ -39,9 +39,10 @@ class Settings(BaseModel):
     VERSION: str = "1.0.0"
     API_V1_STR: str = "/api/v1"
     SECRET_KEY: str = os.getenv("SECRET_KEY", "change-this-local-development-secret")
+    ENVIRONMENT: str = os.getenv("ENVIRONMENT", "production" if os.getenv("RENDER") else "development")
     CORS_ORIGINS: list[str] = _env_list(
         "CORS_ORIGINS",
-        "http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:8000,http://localhost:8000,http://127.0.0.1:8080,http://localhost:8080",
+        "http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:8000,http://localhost:8000,http://127.0.0.1:8080,http://localhost:8080,https://urban-water-logged-ai.vercel.app",
     )
 
     # Authentication. Demo credentials are local simulation conveniences only.

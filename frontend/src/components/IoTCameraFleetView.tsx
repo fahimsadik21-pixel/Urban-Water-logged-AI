@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { DhakaMiniGisMap, type DeviceNodeData } from './DhakaMiniGisMap';
 import { useLanguage } from '../contexts/LanguageContext';
+import { apiFetch } from '../lib/api';
 
 export const IoTCameraFleetView: React.FC = () => {
   const { lang, formatNumber } = useLanguage();
@@ -131,8 +132,8 @@ export const IoTCameraFleetView: React.FC = () => {
 
   useEffect(() => {
     Promise.all([
-      fetch('/api/v1/devices/health', { credentials: 'include' }).then((r) => (r.ok ? r.json() : [])),
-      fetch('/api/v1/map/layers', { credentials: 'include' }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+      apiFetch<any[]>('/api/v1/devices/health').catch(() => []),
+      apiFetch<any>('/api/v1/map/layers').catch(() => null),
     ])
       .then(([records, mapLayers]) => {
         // Fallback coordinate map from map/layers GeoJSON if needed
@@ -203,8 +204,7 @@ export const IoTCameraFleetView: React.FC = () => {
 
   // Fetch camera streams when sub-tab switches or on mount
   useEffect(() => {
-    fetch('/api/v1/cameras/streams', { credentials: 'include' })
-      .then((r) => (r.ok ? r.json() : []))
+    apiFetch<any[]>('/api/v1/cameras/streams')
       .then((data) => setCameraStreams(data))
       .catch((err) => console.warn('Camera streams fetch failed:', err));
   }, [activeSubTab]);
@@ -218,18 +218,14 @@ export const IoTCameraFleetView: React.FC = () => {
     setEvidenceStatus(null);
     setIsAnalyzing(true);
 
-    fetch(`/api/v1/cameras/frames/${frameId}`, { credentials: 'include' })
-      .then((r) => (r.ok ? r.json() : null))
+    apiFetch<any>(`/api/v1/cameras/frames/${frameId}`)
       .then((data) => setFrameData(data))
       .catch(() => setFrameData(null));
 
-    fetch(`/api/v1/cameras/frames/${frameId}/analyze`, {
+    apiFetch<any>(`/api/v1/cameras/frames/${frameId}/analyze`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ conf_threshold: 0.25 }),
-      credentials: 'include',
     })
-      .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
         setFrameAnalysis(data);
         if (data?.evidence_integrity) {
@@ -242,8 +238,7 @@ export const IoTCameraFleetView: React.FC = () => {
 
   const handleVerifyEvidence = (frameId: string) => {
     setIsVerifyingEvidence(true);
-    fetch(`/api/v1/audit/camera-frames/${frameId}/verify`, { credentials: 'include' })
-      .then((r) => (r.ok ? r.json() : null))
+    apiFetch<any>(`/api/v1/audit/camera-frames/${frameId}/verify`)
       .then((data) => setEvidenceStatus(data))
       .catch((err) => console.warn('Evidence verification failed:', err))
       .finally(() => setIsVerifyingEvidence(false));

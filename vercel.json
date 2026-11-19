@@ -4,6 +4,22 @@
   "framework": "vite",
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": "https://urban-water-logged-ai-backend.onrender.com/api/$1"
+    },
+    {
+      "source": "/health",
+      "destination": "https://urban-water-logged-ai-backend.onrender.com/health"
+    },
+    {
+      "source": "/docs",
+      "destination": "https://urban-water-logged-ai-backend.onrender.com/docs"
+    },
+    {
+      "source": "/openapi.json",
+      "destination": "https://urban-water-logged-ai-backend.onrender.com/openapi.json"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

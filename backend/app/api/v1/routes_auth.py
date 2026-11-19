@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections import defaultdict, deque
 from datetime import timedelta
+import os
 from time import monotonic
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
@@ -175,7 +176,11 @@ def login(payload: LoginRequest, request: Request, response: Response, db: Sessi
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Account is not authorized for this portal")
 
     token, auth_session = create_session(db, user)
-    is_cross_site = settings.ENVIRONMENT == "production" or os.getenv("RENDER") is not None or settings.AUTH_COOKIE_SECURE
+    is_cross_site = (
+        getattr(settings, "ENVIRONMENT", "development") == "production"
+        or os.getenv("RENDER") is not None
+        or getattr(settings, "AUTH_COOKIE_SECURE", False)
+    )
     response.set_cookie(
         key=settings.AUTH_COOKIE_NAME,
         value=token,
