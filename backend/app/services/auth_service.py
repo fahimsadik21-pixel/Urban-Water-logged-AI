@@ -18,7 +18,7 @@ from backend.app.config import settings
 from backend.app.database import get_db
 from backend.app.models.auth import AuthSession, User
 
-PBKDF2_ITERATIONS = 600_000
+PBKDF2_ITERATIONS = 100_000
 PASSWORD_SCHEME = "pbkdf2_sha256"
 
 
@@ -150,7 +150,7 @@ def ensure_seed_accounts(db: Session) -> None:
                     is_active=True,
                 )
             )
-        elif not user.hashed_password.startswith(f"{PASSWORD_SCHEME}$"):
+        elif not user.hashed_password.startswith(f"{PASSWORD_SCHEME}${PBKDF2_ITERATIONS}$"):
             user.hashed_password = hash_password(password)
             user.role = role
             user.is_active = True

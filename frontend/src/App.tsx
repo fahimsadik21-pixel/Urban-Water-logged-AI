@@ -78,10 +78,11 @@ export default function App() {
     }
     return [];
   });
-  const [syncCadence, setSyncCadence] = useState(15);
+  const [syncCadence, setSyncCadence] = useState(45);
   const [isSyncing, setIsSyncing] = useState(false);
   const [lastSyncedTime, setLastSyncedTime] = useState('—');
   const healthFailuresRef = useRef<number>(0);
+  const syncingRef = useRef<boolean>(false);
 
   // Simulation Demo Sandbox & Video Tour State
   const [isSimulationModalOpen, setIsSimulationModalOpen] = useState(false);
@@ -252,11 +253,17 @@ export default function App() {
   }, [user]);
 
   const handleManualSync = useCallback(async () => {
+    if (syncingRef.current) return;
+    syncingRef.current = true;
     setIsSyncing(true);
-    void checkHealth();
-    await Promise.all([fetchMapLayers(), fetchIncidents()]);
-    setLastSyncedTime(new Date().toLocaleTimeString(lang === 'bn' ? 'bn-BD' : 'en-US', { hour: 'numeric', minute: '2-digit', hour12: true }));
-    setIsSyncing(false);
+    try {
+      void checkHealth();
+      await Promise.all([fetchMapLayers(), fetchIncidents()]);
+      setLastSyncedTime(new Date().toLocaleTimeString(lang === 'bn' ? 'bn-BD' : 'en-US', { hour: 'numeric', minute: '2-digit', hour12: true }));
+    } finally {
+      syncingRef.current = false;
+      setIsSyncing(false);
+    }
   }, [checkHealth, fetchIncidents, fetchMapLayers, lang]);
 
   useEffect(() => {
@@ -472,7 +479,7 @@ export default function App() {
         </span>
         <div className="hidden items-center gap-1 sm:flex">
           <span>{lang === 'bn' ? 'স্বয়ংক্রিয় সিঙ্ক:' : 'Auto-sync:'}</span>
-          {[5, 10, 30].map((seconds) => (
+          {[15, 30, 60].map((seconds) => (
             <button
               key={seconds}
               type="button"

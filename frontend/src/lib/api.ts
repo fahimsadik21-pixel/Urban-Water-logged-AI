@@ -18,17 +18,6 @@ export class ApiError extends Error {
   }
 }
 
-function getTimeoutSignal(ms: number): AbortSignal | undefined {
-  if (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') {
-    try {
-      return AbortSignal.timeout(ms);
-    } catch {
-      return undefined;
-    }
-  }
-  return undefined;
-}
-
 export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
   const headers = new Headers(init.headers);
   if (init.body && !(init.body instanceof FormData) && !headers.has('Content-Type')) {
@@ -47,20 +36,16 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise
 
   let response: Response;
   try {
-    const primarySignal = init.signal || getTimeoutSignal(5500);
     response = await fetch(primaryUrl, {
       ...init,
-      signal: primarySignal,
       headers,
       credentials: 'include',
     });
-    // In case edge proxy returned gateway timeout or 502/503 during cold-wake, try fallback
-    if (!response.ok && (response.status === 502 || response.status === 503 || response.status === 504) && primaryUrl !== fallbackUrl) {
+    // In case edge proxy returned 5xx server error, gateway timeout, or connection failure, try direct Render fallback
+    if (!response.ok && response.status >= 500 && primaryUrl !== fallbackUrl) {
       try {
-        const altSignal = init.signal || getTimeoutSignal(6000);
         const altResponse = await fetch(fallbackUrl, {
           ...init,
-          signal: altSignal,
           headers,
           credentials: 'include',
         });
@@ -72,12 +57,10 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise
       }
     }
   } catch (err) {
-    // Network failure (CORS block, DNS, timeout, or offline proxy) -> auto fallback
+    // Network failure (CORS block, DNS, or offline proxy) -> auto fallback
     if (primaryUrl !== fallbackUrl) {
-      const fallbackSignal = init.signal || getTimeoutSignal(7000);
       response = await fetch(fallbackUrl, {
         ...init,
-        signal: fallbackSignal,
         headers,
         credentials: 'include',
       });
