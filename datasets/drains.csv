@@ -1,0 +1,16 @@
+drain_id,drain_name,drain_type,design_capacity_lps,safe_level_percent,maintenance_condition,outfall_type,wkt_geometry,synthetic_data
+DRN_001,Kallyanpur Storm Canal,box_drain,138.27000,76.87000,fair,retention_area,POINT (90.378225 23.760850),True
+DRN_002,Rampura Outfall Canal,box_drain,527.35000,85.33000,fair,large_drain,POINT (90.380450 23.763775),True
+DRN_003,Begunbari Hatirjheel Channel,open_channel,367.57000,74.70000,good,retention_area,POINT (90.376725 23.772450),True
+DRN_004,Dholai Khal Storm Drain,open_channel,642.72000,75.33000,poor,canal,POINT (90.391750 23.782325),True
+DRN_005,Mirpur Digun Khal,box_drain,836.76000,76.83000,poor,canal,POINT (90.393975 23.781050),True
+DRN_006,Khilgaon-Basabo Canal,open_channel,410.46000,74.65000,fair,large_drain,POINT (90.391200 23.757633),True
+DRN_007,Segunbagicha Storm Culvert,box_drain,693.75000,74.74000,good,large_drain,POINT (90.395400 23.755100),True
+DRN_008,Gulshan-Banani Lake Channel,box_drain,117.94000,80.51000,fair,large_drain,POINT (90.403333 23.741133),True
+DRN_009,Rayerbazar Outfall Drain,box_drain,571.81000,73.58000,fair,canal,POINT (90.405033 23.742233),True
+DRN_010,Ibrahimpur Box Drain,open_channel,818.55000,80.09000,fair,large_drain,POINT (90.403000 23.740867),True
+DRN_011,Baunia Khal Drainage Line,storm_sewer,271.54000,75.87000,fair,retention_area,POINT (90.407533 23.734633),True
+DRN_012,Sutrapur Canal System,box_drain,745.34000,82.23000,fair,canal,POINT (90.406533 23.736733),True
+DRN_013,Hazaribagh Embankment Canal,box_drain,454.50000,74.70000,fair,canal,POINT (90.407567 23.731167),True
+DRN_014,Jurain Storm Drainage Canal,box_drain,205.42000,79.78000,good,retention_area,POINT (90.406000 23.728333),True
+DRN_015,Postogola Outfall Channel,box_drain,175.34000,81.89000,fair,canal,POINT (90.381167 23.739000),True

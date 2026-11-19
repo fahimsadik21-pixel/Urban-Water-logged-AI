@@ -1,0 +1,32 @@
+{
+  "model_architecture": "yolov8n-seg / yolo26n-seg edge-optimized",
+  "task": "segment",
+  "epochs": 5,
+  "batch_size": 16,
+  "input_resolution": [
+    640,
+    640
+  ],
+  "device": "cpu",
+  "training_time_seconds": 1147.72,
+  "best_weights_path": "U:\\Urban Water-logged AI\\backend\\app\\models\\saved_models\\waterlogging_yolo26n_seg\\best.pt",
+  "weights_size_bytes": 7034740,
+  "classes": [
+    "water_shallow",
+    "water_knee",
+    "water_severe",
+    "debris",
+    "drain_inlet_blockage",
+    "road_obstruction"
+  ],
+  "split_manifest": {
+    "train_samples": 350,
+    "train_locations": 35,
+    "val_samples": 80,
+    "val_locations": 8,
+    "test_samples": 70,
+    "test_locations": 7
+  },
+  "simulation_disclaimer": "Synthetic-trained simulation model \u2014 not field validated.",
+  "completed_at": "2026-11-18T20:25:01+06:00"
+}

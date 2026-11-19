@@ -1,0 +1,31 @@
+infrastructure_id,location_id,name,infrastructure_type,criticality_score,population_served,latitude,longitude,access_road_id,synthetic_data
+INF_001,LOC_003,Dhaka Medical College Hospital (DMCH),hospital,100,25573,23.78712,90.37380,ROAD_003,True
+INF_002,LOC_017,Bangabandhu Sheikh Mujib Medical University (BSMMU),hospital,100,7766,23.77817,90.40317,ROAD_017,True
+INF_003,LOC_049,Shaheed Suhrawardy Medical College Hospital,hospital,100,5435,23.82003,90.42105,ROAD_049,True
+INF_004,LOC_015,Square Hospital,hospital,100,36800,23.76674,90.38675,ROAD_015,True
+INF_005,LOC_043,Kurmitola General Hospital,hospital,100,39119,23.69795,90.43485,ROAD_043,True
+INF_006,LOC_042,National Heart Foundation Hospital,hospital,100,29862,23.70987,90.43612,ROAD_042,True
+INF_007,LOC_027,Fire Service & Civil Defence HQ (Kakrail),fire_station,95,36026,23.74825,90.40593,ROAD_027,True
+INF_008,LOC_026,Tejgaon Fire Station,fire_station,95,37151,23.74012,90.40745,ROAD_026,True
+INF_009,LOC_034,Mirpur Fire Station,fire_station,95,20659,23.73860,90.38284,ROAD_034,True
+INF_010,LOC_048,Viqarunnisa Noon School & College,school,70,9353,23.78468,90.34658,ROAD_048,True
+INF_011,LOC_040,Notre Dame College,school,70,10086,23.73612,90.41196,ROAD_040,True
+INF_012,LOC_045,Dhaka Residential Model College,school,70,7625,23.71709,90.37112,ROAD_045,True
+INF_013,LOC_024,Government Laboratory High School,school,70,6178,23.74832,90.41757,ROAD_024,True
+INF_014,LOC_035,Rajuk Uttara Model College,school,70,37659,23.71512,90.39643,ROAD_035,True
+INF_015,LOC_006,Ideal School and College,school,70,22494,23.75972,90.37279,ROAD_006,True
+INF_016,LOC_021,BUET Main Campus,school,70,11143,23.79280,90.41400,ROAD_021,True
+INF_017,LOC_047,Dhaka University Campus,school,70,21553,23.74706,90.36320,ROAD_047,True
+INF_018,LOC_005,Mirpur Indoor Stadium Relief Center,shelter,80,28389,23.77261,90.36393,ROAD_005,True
+INF_019,LOC_016,Sultana Kamal Gymnasium Center,shelter,80,38554,23.77467,90.39054,ROAD_016,True
+INF_020,LOC_037,Mohammadpur Community Relief Center,shelter,80,21211,23.72336,90.39983,ROAD_037,True
+INF_021,LOC_029,Old Dhaka Community Center Shelter,shelter,80,17833,23.73973,90.39411,ROAD_029,True
+INF_022,LOC_039,Uttara Community Center Shelter,shelter,80,34856,23.72809,90.41830,ROAD_039,True
+INF_023,LOC_004,Sayedabad Central Inter-district Terminal,major_transport,85,13681,23.77833,90.35852,ROAD_004,True
+INF_024,LOC_001,Gabtoli Bus Terminal Corridor,major_transport,85,19989,23.80689,90.36742,ROAD_001,True
+INF_025,LOC_010,Mohakhali Bus Terminal Junction,major_transport,85,34049,23.74846,90.38334,ROAD_010,True
+INF_026,LOC_020,Kamalapur Railway Station Corridor,major_transport,85,18930,23.77881,90.41597,ROAD_020,True
+INF_027,LOC_050,DWASA Pagla Drainage Pump Station,utility,75,34608,23.85708,90.39922,ROAD_050,True
+INF_028,LOC_012,DWASA Kallyanpur Storm Drainage Pump Station,utility,75,28424,23.75257,90.38161,ROAD_012,True
+INF_029,LOC_007,DWASA Rampura Drainage Pump Station,utility,75,20937,23.76366,90.36166,ROAD_007,True
+INF_030,LOC_036,DWASA Dholai Khal Drainage Pumping Station,utility,75,5461,23.71881,90.38875,ROAD_036,True

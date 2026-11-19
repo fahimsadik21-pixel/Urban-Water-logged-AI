@@ -1,0 +1,268 @@
+[
+  {
+    "component": "AdminPanel.tsx",
+    "line": 43,
+    "severity": "Low",
+    "category": "Console Logging",
+    "detail": "Console warning/error statement: console.warn('Oversight load error:', e);"
+  },
+  {
+    "component": "AdminPanel.tsx",
+    "line": 64,
+    "severity": "Low",
+    "category": "Console Logging",
+    "detail": "Console warning/error statement: console.warn('Debris tasks load error:', e);"
+  },
+  {
+    "component": "AuditLedgerVerifier.tsx",
+    "line": 30,
+    "severity": "High",
+    "category": "Authentication / Credential Omission",
+    "detail": "Raw fetch() call without credentials: 'include'. May fail when session cookies are required: const res = await fetch(`${API_BASE_URL}/api/v1/audit/ledger?limit=60`);"
+  },
+  {
+    "component": "AuditLedgerVerifier.tsx",
+    "line": 54,
+    "severity": "High",
+    "category": "Authentication / Credential Omission",
+    "detail": "Raw fetch() call without credentials: 'include'. May fail when session cookies are required: const res = await fetch(`${API_BASE_URL}/api/v1/audit/verify`, {"
+  },
+  {
+    "component": "AuditLedgerVerifier.tsx",
+    "line": 71,
+    "severity": "High",
+    "category": "Authentication / Credential Omission",
+    "detail": "Raw fetch() call without credentials: 'include'. May fail when session cookies are required: const res = await fetch(`${API_BASE_URL}/api/v1/audit/simulate-tamper`, {"
+  },
+  {
+    "component": "AuditLedgerVerifier.tsx",
+    "line": 39,
+    "severity": "Low",
+    "category": "Console Logging",
+    "detail": "Console warning/error statement: console.warn('Failed to load ledger:', err.message);"
+  },
+  {
+    "component": "CitizenReportingPortal.tsx",
+    "line": 87,
+    "severity": "Low",
+    "category": "Console Logging",
+    "detail": "Console warning/error statement: console.warn('Could not fetch road advisories:', e);"
+  },
+  {
+    "component": "DhakaLiveMap.tsx",
+    "line": 164,
+    "severity": "High",
+    "category": "Authentication / Credential Omission",
+    "detail": "Raw fetch() call without credentials: 'include'. May fail when session cookies are required: const res = await fetch("
+  },
+  {
+    "component": "DhakaLiveMap.tsx",
+    "line": 193,
+    "severity": "High",
+    "category": "Authentication / Credential Omission",
+    "detail": "Raw fetch() call without credentials: 'include'. May fail when session cookies are required: const res = await fetch('https://api.rainviewer.com/public/weather-maps.json');"
+  },
+  {
+    "component": "DhakaLiveMap.tsx",
+    "line": 180,
+    "severity": "Low",
+    "category": "Console Logging",
+    "detail": "Console warning/error statement: console.warn('Real-time weather API error:', e);"
+  },
+  {
+    "component": "DhakaLiveMap.tsx",
+    "line": 204,
+    "severity": "Low",
+    "category": "Console Logging",
+    "detail": "Console warning/error statement: console.warn('RainViewer Radar API error:', e);"
+  },
+  {
+    "component": "EdgeDeviceInspector.tsx",
+    "line": 29,
+    "severity": "High",
+    "category": "Authentication / Credential Omission",
+    "detail": "Raw fetch() call without credentials: 'include'. May fail when session cookies are required: const res = await fetch(`${API_BASE_URL}/api/v1/devices/edge-nodes`);"
+  },
+  {
+    "component": "EdgeDeviceInspector.tsx",
+    "line": 49,
+    "severity": "High",
+    "category": "Authentication / Credential Omission",
+    "detail": "Raw fetch() call without credentials: 'include'. May fail when session cookies are required: await fetch(`${API_BASE_URL}/api/v1/devices/edge-nodes/${nodeId}/power-failure`, {"
+  },
+  {
+    "component": "EdgeDeviceInspector.tsx",
+    "line": 61,
+    "severity": "High",
+    "category": "Authentication / Credential Omission",
+    "detail": "Raw fetch() call without credentials: 'include'. May fail when session cookies are required: await fetch(`${API_BASE_URL}/api/v1/devices/edge-nodes/${nodeId}/power-restoration`, {"
+  },
+  {
+    "component": "EdgeDeviceInspector.tsx",
+    "line": 73,
+    "severity": "High",
+    "category": "Authentication / Credential Omission",
+    "detail": "Raw fetch() call without credentials: 'include'. May fail when session cookies are required: await fetch(`${API_BASE_URL}/api/v1/devices/edge-nodes/${nodeId}/network-drop`, {"
+  },
+  {
+    "component": "EdgeDeviceInspector.tsx",
+    "line": 85,
+    "severity": "High",
+    "category": "Authentication / Credential Omission",
+    "detail": "Raw fetch() call without credentials: 'include'. May fail when session cookies are required: await fetch(`${API_BASE_URL}/api/v1/devices/edge-nodes/${nodeId}/network-restore`, {"
+  },
+  {
+    "component": "EdgeDeviceInspector.tsx",
+    "line": 34,
+    "severity": "Low",
+    "category": "Console Logging",
+    "detail": "Console warning/error statement: console.warn('Failed to load edge nodes:', err.message);"
+  },
+  {
+    "component": "HackathonSimulationCenter.tsx",
+    "line": 88,
+    "severity": "High",
+    "category": "Authentication / Credential Omission",
+    "detail": "Raw fetch() call without credentials: 'include'. May fail when session cookies are required: const res = await fetch(`${API_BASE_URL}/api/v1/simulation/scenarios/${letter}`);"
+  },
+  {
+    "component": "IncidentDetailPanel.tsx",
+    "line": 49,
+    "severity": "High",
+    "category": "Authentication / Credential Omission",
+    "detail": "Raw fetch() call without credentials: 'include'. May fail when session cookies are required: const res = await fetch(`${API_BASE_URL}/api/v1/incidents/${selectedIncident.incident_id}`);"
+  },
+  {
+    "component": "IncidentDetailPanel.tsx",
+    "line": 77,
+    "severity": "High",
+    "category": "Authentication / Credential Omission",
+    "detail": "Raw fetch() call without credentials: 'include'. May fail when session cookies are required: const res = await fetch(`${API_BASE_URL}/api/v1/incidents/${detail.incident_id}/transition`, {"
+  },
+  {
+    "component": "IoTCameraFleetView.tsx",
+    "line": 134,
+    "severity": "High",
+    "category": "Authentication / Credential Omission",
+    "detail": "Raw fetch() call without credentials: 'include'. May fail when session cookies are required: fetch(`/api/v1/cameras/frames/${frameId}/analyze`, {"
+  },
+  {
+    "component": "IoTCameraFleetView.tsx",
+    "line": 109,
+    "severity": "Low",
+    "category": "Console Logging",
+    "detail": "Console warning/error statement: .catch((error) => console.warn('Device health fetch failed:', error));"
+  },
+  {
+    "component": "IoTCameraFleetView.tsx",
+    "line": 117,
+    "severity": "Low",
+    "category": "Console Logging",
+    "detail": "Console warning/error statement: .catch((err) => console.warn('Camera streams fetch failed:', err));"
+  },
+  {
+    "component": "IoTCameraFleetView.tsx",
+    "line": 156,
+    "severity": "Low",
+    "category": "Console Logging",
+    "detail": "Console warning/error statement: .catch((err) => console.warn('Evidence verification failed:', err))"
+  },
+  {
+    "component": "OperatorNotificationDrawer.tsx",
+    "line": 52,
+    "severity": "Low",
+    "category": "Console Logging",
+    "detail": "Console warning/error statement: console.warn('Could not fetch operator notifications:', e);"
+  },
+  {
+    "component": "PublicRoadStatus.tsx",
+    "line": 22,
+    "severity": "High",
+    "category": "Authentication / Credential Omission",
+    "detail": "Raw fetch() call without credentials: 'include'. May fail when session cookies are required: const res = await fetch(`${API_BASE_URL}/api/v1/public/status`);"
+  },
+  {
+    "component": "PublicRoadStatus.tsx",
+    "line": 28,
+    "severity": "Low",
+    "category": "Console Logging",
+    "detail": "Console warning/error statement: console.warn('Failed to load public road status:', err.message);"
+  },
+  {
+    "component": "PumpConsole.tsx",
+    "line": 53,
+    "severity": "High",
+    "category": "Authentication / Credential Omission",
+    "detail": "Raw fetch() call without credentials: 'include'. May fail when session cookies are required: const res = await fetch(`${API_BASE_URL}/api/v1/pumps/`);"
+  },
+  {
+    "component": "PumpConsole.tsx",
+    "line": 126,
+    "severity": "High",
+    "category": "Authentication / Credential Omission",
+    "detail": "Raw fetch() call without credentials: 'include'. May fail when session cookies are required: const res = await fetch(`${API_BASE_URL}/api/v1/pumps/${selectedPump.pump_id}/command`, {"
+  },
+  {
+    "component": "PumpConsole.tsx",
+    "line": 165,
+    "severity": "High",
+    "category": "Authentication / Credential Omission",
+    "detail": "Raw fetch() call without credentials: 'include'. May fail when session cookies are required: const res = await fetch(`${API_BASE_URL}/api/v1/pumps/${selectedPump.pump_id}/emergency-stop`, {"
+  },
+  {
+    "component": "PumpConsole.tsx",
+    "line": 196,
+    "severity": "High",
+    "category": "Authentication / Credential Omission",
+    "detail": "Raw fetch() call without credentials: 'include'. May fail when session cookies are required: const res = await fetch(`${API_BASE_URL}/api/v1/pumps/${selectedPump.pump_id}/reset-estop`, {"
+  },
+  {
+    "component": "PumpConsole.tsx",
+    "line": 234,
+    "severity": "High",
+    "category": "Authentication / Credential Omission",
+    "detail": "Raw fetch() call without credentials: 'include'. May fail when session cookies are required: await fetch(`${API_BASE_URL}/api/v1/pumps/${selectedPump.pump_id}/simulate-conditions`, {"
+  },
+  {
+    "component": "PumpConsole.tsx",
+    "line": 66,
+    "severity": "Low",
+    "category": "Console Logging",
+    "detail": "Console warning/error statement: console.warn('Failed to load pumps:', err.message);"
+  },
+  {
+    "component": "PumpConsole.tsx",
+    "line": 247,
+    "severity": "Low",
+    "category": "Console Logging",
+    "detail": "Console warning/error statement: console.warn('Failed to simulate conditions:', err.message);"
+  },
+  {
+    "component": "PumpSafetyView.tsx",
+    "line": 450,
+    "severity": "Medium",
+    "category": "Dead Button / Missing Handler",
+    "detail": "Button tag has no onClick handler and is not a submit button:               <button className=\"text-[11px] text-cyan-400 hover:underline\">View Full Log &gt;</butt"
+  },
+  {
+    "component": "PumpSafetyView.tsx",
+    "line": 598,
+    "severity": "Medium",
+    "category": "Dead Button / Missing Handler",
+    "detail": "Button tag has no onClick handler and is not a submit button:               <button className=\"text-[11px] text-cyan-400 hover:underline\">View All &gt;</button>"
+  },
+  {
+    "component": "VideoDemoTourDock.tsx",
+    "line": 236,
+    "severity": "Low",
+    "category": "Console Logging",
+    "detail": "Console warning/error statement: console.error('Error during video tour step:', err);"
+  },
+  {
+    "component": "VideoDemoTourDock.tsx",
+    "line": 278,
+    "severity": "Low",
+    "category": "Console Logging",
+    "detail": "Console warning/error statement: console.error('Error resetting tour:', err);"
+  }
+]

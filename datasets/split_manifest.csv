@@ -1,0 +1,65 @@
+scope_type,scope_id,event_type,start_timestamp,end_timestamp,split,holdout_reason,synthetic_data
+dry_period,DRY_D01,dry_or_between_storms,2026-06-01 00:00:00+06:00,2026-06-01 23:55:00+06:00,train,calendar_block_split,True
+dry_period,DRY_D02,dry_or_between_storms,2026-06-02 00:00:00+06:00,2026-06-02 23:55:00+06:00,train,calendar_block_split,True
+dry_period,DRY_D03,dry_or_between_storms,2026-06-03 00:00:00+06:00,2026-06-03 23:55:00+06:00,train,calendar_block_split,True
+dry_period,DRY_D04,dry_or_between_storms,2026-06-04 00:00:00+06:00,2026-06-04 23:55:00+06:00,train,calendar_block_split,True
+dry_period,DRY_D05,dry_or_between_storms,2026-06-05 00:00:00+06:00,2026-06-05 23:55:00+06:00,train,calendar_block_split,True
+dry_period,DRY_D06,dry_or_between_storms,2026-06-06 00:00:00+06:00,2026-06-06 23:55:00+06:00,train,calendar_block_split,True
+dry_period,DRY_D07,dry_or_between_storms,2026-06-07 00:00:00+06:00,2026-06-07 23:55:00+06:00,train,calendar_block_split,True
+dry_period,DRY_D08,dry_or_between_storms,2026-06-08 00:00:00+06:00,2026-06-08 23:55:00+06:00,train,calendar_block_split,True
+dry_period,DRY_D09,dry_or_between_storms,2026-06-09 00:00:00+06:00,2026-06-09 23:55:00+06:00,train,calendar_block_split,True
+dry_period,DRY_D10,dry_or_between_storms,2026-06-10 00:00:00+06:00,2026-06-10 23:55:00+06:00,train,calendar_block_split,True
+dry_period,DRY_D11,dry_or_between_storms,2026-06-11 00:00:00+06:00,2026-06-11 23:55:00+06:00,train,calendar_block_split,True
+dry_period,DRY_D12,dry_or_between_storms,2026-06-12 00:00:00+06:00,2026-06-12 23:55:00+06:00,train,calendar_block_split,True
+dry_period,DRY_D13,dry_or_between_storms,2026-06-13 00:00:00+06:00,2026-06-13 23:55:00+06:00,train,calendar_block_split,True
+dry_period,DRY_D14,dry_or_between_storms,2026-06-14 00:00:00+06:00,2026-06-14 23:55:00+06:00,train,calendar_block_split,True
+dry_period,DRY_D15,dry_or_between_storms,2026-06-15 00:00:00+06:00,2026-06-15 23:55:00+06:00,train,calendar_block_split,True
+dry_period,DRY_D16,dry_or_between_storms,2026-06-16 00:00:00+06:00,2026-06-16 23:55:00+06:00,train,calendar_block_split,True
+dry_period,DRY_D17,dry_or_between_storms,2026-06-17 00:00:00+06:00,2026-06-17 23:55:00+06:00,train,calendar_block_split,True
+dry_period,DRY_D18,dry_or_between_storms,2026-06-18 00:00:00+06:00,2026-06-18 23:55:00+06:00,train,calendar_block_split,True
+dry_period,DRY_D19,dry_or_between_storms,2026-06-19 00:00:00+06:00,2026-06-19 23:55:00+06:00,train,calendar_block_split,True
+dry_period,DRY_D20,dry_or_between_storms,2026-06-20 00:00:00+06:00,2026-06-20 23:55:00+06:00,train,calendar_block_split,True
+dry_period,DRY_D21,dry_or_between_storms,2026-06-21 00:00:00+06:00,2026-06-21 23:55:00+06:00,train,calendar_block_split,True
+dry_period,DRY_D22,dry_or_between_storms,2026-06-22 00:00:00+06:00,2026-06-22 23:55:00+06:00,validation,calendar_block_split,True
+dry_period,DRY_D23,dry_or_between_storms,2026-06-23 00:00:00+06:00,2026-06-23 23:55:00+06:00,validation,calendar_block_split,True
+dry_period,DRY_D24,dry_or_between_storms,2026-06-24 00:00:00+06:00,2026-06-24 23:55:00+06:00,validation,calendar_block_split,True
+dry_period,DRY_D25,dry_or_between_storms,2026-06-25 00:00:00+06:00,2026-06-25 23:55:00+06:00,validation,calendar_block_split,True
+dry_period,DRY_D26,dry_or_between_storms,2026-06-26 00:00:00+06:00,2026-06-26 23:55:00+06:00,test,calendar_block_split,True
+dry_period,DRY_D27,dry_or_between_storms,2026-06-27 00:00:00+06:00,2026-06-27 23:55:00+06:00,test,calendar_block_split,True
+dry_period,DRY_D28,dry_or_between_storms,2026-06-28 00:00:00+06:00,2026-06-28 23:55:00+06:00,test,calendar_block_split,True
+dry_period,DRY_D29,dry_or_between_storms,2026-06-29 00:00:00+06:00,2026-06-29 23:55:00+06:00,test,calendar_block_split,True
+dry_period,DRY_D30,dry_or_between_storms,2026-06-30 00:00:00+06:00,2026-06-30 23:55:00+06:00,test,calendar_block_split,True
+location_holdout,LOC_041,unseen_location,,,validation,all rows from location held out,True
+location_holdout,LOC_042,unseen_location,,,validation,all rows from location held out,True
+location_holdout,LOC_043,unseen_location,,,validation,all rows from location held out,True
+location_holdout,LOC_044,unseen_location,,,validation,all rows from location held out,True
+location_holdout,LOC_045,unseen_location,,,validation,all rows from location held out,True
+location_holdout,LOC_046,unseen_location,,,test,all rows from location held out,True
+location_holdout,LOC_047,unseen_location,,,test,all rows from location held out,True
+location_holdout,LOC_048,unseen_location,,,test,all rows from location held out,True
+location_holdout,LOC_049,unseen_location,,,test,all rows from location held out,True
+location_holdout,LOC_050,unseen_location,,,test,all rows from location held out,True
+weather_event,STORM_001,heavy,2026-06-01 05:15:00+06:00,2026-06-01 08:30:00+06:00,train,complete_storm_event_split,True
+weather_event,STORM_002,moderate,2026-06-02 19:25:00+06:00,2026-06-02 22:30:00+06:00,train,complete_storm_event_split,True
+weather_event,STORM_003,moderate,2026-06-03 23:30:00+06:00,2026-06-04 02:50:00+06:00,train,complete_storm_event_split,True
+weather_event,STORM_004,extreme,2026-06-05 03:50:00+06:00,2026-06-05 08:15:00+06:00,train,complete_storm_event_split,True
+weather_event,STORM_005,heavy,2026-06-06 08:20:00+06:00,2026-06-06 11:45:00+06:00,train,complete_storm_event_split,True
+weather_event,STORM_006,light,2026-06-07 14:15:00+06:00,2026-06-07 16:45:00+06:00,train,complete_storm_event_split,True
+weather_event,STORM_007,light,2026-06-08 17:50:00+06:00,2026-06-08 20:00:00+06:00,train,complete_storm_event_split,True
+weather_event,STORM_008,heavy,2026-06-10 02:20:00+06:00,2026-06-10 08:10:00+06:00,train,complete_storm_event_split,True
+weather_event,STORM_009,heavy,2026-06-11 14:30:00+06:00,2026-06-11 18:00:00+06:00,train,complete_storm_event_split,True
+weather_event,STORM_010,heavy,2026-06-12 15:00:00+06:00,2026-06-12 19:25:00+06:00,train,complete_storm_event_split,True
+weather_event,STORM_011,heavy,2026-06-13 21:00:00+06:00,2026-06-14 02:45:00+06:00,train,complete_storm_event_split,True
+weather_event,STORM_012,moderate,2026-06-15 07:10:00+06:00,2026-06-15 10:50:00+06:00,train,complete_storm_event_split,True
+weather_event,STORM_013,light,2026-06-16 10:05:00+06:00,2026-06-16 12:35:00+06:00,train,complete_storm_event_split,True
+weather_event,STORM_014,moderate,2026-06-17 13:05:00+06:00,2026-06-17 17:15:00+06:00,train,complete_storm_event_split,True
+weather_event,STORM_015,extreme,2026-06-18 23:40:00+06:00,2026-06-19 05:05:00+06:00,train,complete_storm_event_split,True
+weather_event,STORM_016,heavy,2026-06-19 23:45:00+06:00,2026-06-20 04:10:00+06:00,train,complete_storm_event_split,True
+weather_event,STORM_017,heavy,2026-06-21 14:10:00+06:00,2026-06-21 18:50:00+06:00,validation,complete_storm_event_split,True
+weather_event,STORM_018,moderate,2026-06-22 16:55:00+06:00,2026-06-22 19:00:00+06:00,validation,complete_storm_event_split,True
+weather_event,STORM_019,heavy,2026-06-24 02:50:00+06:00,2026-06-24 08:20:00+06:00,validation,complete_storm_event_split,True
+weather_event,STORM_020,moderate,2026-06-25 01:50:00+06:00,2026-06-25 05:20:00+06:00,validation,complete_storm_event_split,True
+weather_event,STORM_021,moderate,2026-06-26 10:55:00+06:00,2026-06-26 15:45:00+06:00,test,complete_storm_event_split,True
+weather_event,STORM_022,light,2026-06-27 12:30:00+06:00,2026-06-27 14:45:00+06:00,test,complete_storm_event_split,True
+weather_event,STORM_023,heavy,2026-06-28 22:45:00+06:00,2026-06-29 03:55:00+06:00,test,complete_storm_event_split,True
+weather_event,STORM_024,light,2026-06-30 05:25:00+06:00,2026-06-30 07:05:00+06:00,test,complete_storm_event_split,True

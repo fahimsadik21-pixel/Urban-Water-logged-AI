@@ -1,0 +1,108 @@
+{
+  "hardcoded_fallbacks": [],
+  "empty_stubs_or_dead_handlers": [],
+  "math_random_or_fake_generators": [],
+  "broken_api_calls_or_urls": [],
+  "inconsistent_permissions_or_roles": [],
+  "live_api_endpoint_audit": [
+    {
+      "endpoint": "GET /health",
+      "description": "Health Check",
+      "status_code": 200,
+      "is_ok": true,
+      "response_preview": "{'status': 'HEALTHY'}"
+    },
+    {
+      "endpoint": "GET /docs",
+      "description": "OpenAPI Documentation",
+      "status_code": 200,
+      "is_ok": true,
+      "response_preview": "\n    <!DOCTYPE html>\n    <html>\n    <head>\n    <meta name=\"viewport\" content=\"width=device-width, in"
+    },
+    {
+      "endpoint": "GET /api/v1/auth/status",
+      "description": "Auth Status (Anonymous)",
+      "status_code": 404,
+      "is_ok": false,
+      "response_preview": "{'detail': 'Not Found'}"
+    },
+    {
+      "endpoint": "GET /api/v1/incidents",
+      "description": "Public Incidents",
+      "status_code": 307,
+      "is_ok": false,
+      "response_preview": ""
+    },
+    {
+      "endpoint": "GET /api/v1/hotspots",
+      "description": "Public Hotspots",
+      "status_code": 404,
+      "is_ok": false,
+      "response_preview": "{'detail': 'Not Found'}"
+    },
+    {
+      "endpoint": "GET /api/v1/cameras",
+      "description": "Public Cameras List",
+      "status_code": 404,
+      "is_ok": false,
+      "response_preview": "{'detail': 'Not Found'}"
+    },
+    {
+      "endpoint": "GET /api/v1/public/road-status",
+      "description": "Public Road Status",
+      "status_code": 404,
+      "is_ok": false,
+      "response_preview": "{'detail': 'Not Found'}"
+    },
+    {
+      "endpoint": "GET /api/v1/audit/ledger/verify",
+      "description": "Audit Ledger Verification (Anon)",
+      "status_code": 404,
+      "is_ok": false,
+      "response_preview": "{'detail': 'Not Found'}"
+    },
+    {
+      "endpoint": "GET /api/v1/pumps/status",
+      "description": "Pumps Status (Anon)",
+      "status_code": 401,
+      "is_ok": true,
+      "response_preview": "{'detail': 'Authentication required'}"
+    },
+    {
+      "endpoint": "POST /api/v1/auth/login (civic)",
+      "description": "Login as civic",
+      "status_code": 200,
+      "is_ok": true,
+      "response_preview": "Success, user=civic, role=civic"
+    },
+    {
+      "endpoint": "POST /api/v1/auth/login (analyst)",
+      "description": "Login as analyst",
+      "status_code": 200,
+      "is_ok": true,
+      "response_preview": "Success, user=analyst, role=analyst"
+    },
+    {
+      "endpoint": "POST /api/v1/auth/login (operator)",
+      "description": "Login as operator",
+      "status_code": 200,
+      "is_ok": true,
+      "response_preview": "Success, user=operator, role=operator"
+    },
+    {
+      "endpoint": "POST /api/v1/auth/login (admin)",
+      "description": "Login as admin",
+      "status_code": 200,
+      "is_ok": true,
+      "response_preview": "Success, user=admin, role=admin"
+    },
+    {
+      "endpoint": "POST /api/v1/simulation/runs/start",
+      "description": "Start Simulation Demo Sandbox Run",
+      "status_code": 405,
+      "is_ok": false,
+      "response_preview": "{\"detail\":\"Method Not Allowed\"}"
+    }
+  ],
+  "navigation_tabs_and_view_coverage": []
+}

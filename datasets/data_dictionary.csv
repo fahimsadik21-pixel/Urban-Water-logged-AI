@@ -1,0 +1,259 @@
+file_name,column_name,data_type,nullable,description,synthetic_data
+city_config.csv,project_name,str,False,Project name.,True
+city_config.csv,city_profile,str,False,City profile.,True
+city_config.csv,dataset_version,str,False,Dataset version.,True
+city_config.csv,random_seed,int64,False,Random seed.,True
+city_config.csv,timezone,str,False,Timezone.,True
+city_config.csv,start_timestamp,"datetime64[us, Asia/Dhaka]",False,Start timestamp.,True
+city_config.csv,end_timestamp,"datetime64[us, Asia/Dhaka]",False,End timestamp.,True
+city_config.csv,interval_minutes,int64,False,Interval minutes.,True
+city_config.csv,location_count,int64,False,Location count.,True
+city_config.csv,simulation_days,int64,False,Simulation days.,True
+city_config.csv,severity_thresholds_cm,str,False,Severity thresholds cm.,True
+city_config.csv,production_accuracy_claimed,bool,False,Production accuracy claimed.,True
+city_config.csv,synthetic_data,bool,False,Always true. The record is generated and is not a measured field observation.,True
+locations.csv,location_id,str,False,Synthetic monitored-location identifier.,True
+locations.csv,zone_name,str,False,Zone name.,True
+locations.csv,latitude,float64,False,Latitude.,True
+locations.csv,longitude,float64,False,Longitude.,True
+locations.csv,elevation_m,float64,False,Elevation m.,True
+locations.csv,slope_percent,float64,False,Slope percent.,True
+locations.csv,impervious_ratio,float64,False,Impervious ratio.,True
+locations.csv,runoff_coefficient,float64,False,Runoff coefficient.,True
+locations.csv,drainage_capacity_mm_5min,float64,False,Drainage capacity mm 5min.,True
+locations.csv,base_blockage_ratio,float64,False,Base blockage ratio.,True
+locations.csv,ponding_factor,float64,False,Ponding factor.,True
+locations.csv,population_exposure,int64,False,Population exposure.,True
+locations.csv,road_type,str,False,Road type.,True
+locations.csv,road_importance_score,float64,False,Road importance score.,True
+locations.csv,road_id,str,False,Road id.,True
+locations.csv,drain_id,str,False,Drain id.,True
+locations.csv,pump_available,bool,False,Pump available.,True
+locations.csv,camera_available,bool,False,Camera available.,True
+locations.csv,synthetic_data,bool,False,Always true. The record is generated and is not a measured field observation.,True
+roads.csv,road_id,str,False,Road id.,True
+roads.csv,location_id,str,False,Synthetic monitored-location identifier.,True
+roads.csv,road_name,str,False,Road name.,True
+roads.csv,road_type,str,False,Road type.,True
+roads.csv,road_width_m,float64,False,Road width m.,True
+roads.csv,lanes,int64,False,Lanes.,True
+roads.csv,normal_daily_traffic,int64,False,Normal daily traffic.,True
+roads.csv,wkt_geometry,str,False,Wkt geometry.,True
+roads.csv,synthetic_data,bool,False,Always true. The record is generated and is not a measured field observation.,True
+drains.csv,drain_id,str,False,Drain id.,True
+drains.csv,drain_name,str,False,Drain name.,True
+drains.csv,drain_type,str,False,Drain type.,True
+drains.csv,design_capacity_lps,float64,False,Design capacity lps.,True
+drains.csv,safe_level_percent,float64,False,Safe level percent.,True
+drains.csv,maintenance_condition,str,False,Maintenance condition.,True
+drains.csv,outfall_type,str,False,Outfall type.,True
+drains.csv,wkt_geometry,str,False,Wkt geometry.,True
+drains.csv,synthetic_data,bool,False,Always true. The record is generated and is not a measured field observation.,True
+critical_infrastructure.csv,infrastructure_id,str,False,Infrastructure id.,True
+critical_infrastructure.csv,location_id,str,False,Synthetic monitored-location identifier.,True
+critical_infrastructure.csv,name,str,False,Name.,True
+critical_infrastructure.csv,infrastructure_type,str,False,Infrastructure type.,True
+critical_infrastructure.csv,criticality_score,int64,False,Criticality score.,True
+critical_infrastructure.csv,population_served,int64,False,Population served.,True
+critical_infrastructure.csv,latitude,float64,False,Latitude.,True
+critical_infrastructure.csv,longitude,float64,False,Longitude.,True
+critical_infrastructure.csv,access_road_id,str,False,Access road id.,True
+critical_infrastructure.csv,synthetic_data,bool,False,Always true. The record is generated and is not a measured field observation.,True
+devices.csv,location_id,str,False,Synthetic monitored-location identifier.,True
+devices.csv,installed_at,str,False,Installed at.,True
+devices.csv,firmware_version,str,False,Firmware version.,True
+devices.csv,synthetic_data,bool,False,Always true. The record is generated and is not a measured field observation.,True
+devices.csv,device_id,str,False,Device id.,True
+devices.csv,device_type,str,False,Device type.,True
+devices.csv,protocol,str,False,Protocol.,True
+devices.csv,power_source,str,False,Power source.,True
+weather_timeseries.csv,timestamp,"datetime64[us, Asia/Dhaka]",False,Timezone-aware observation or event timestamp.,True
+weather_timeseries.csv,event_id,str,False,Synthetic storm or dry-period identifier.,True
+weather_timeseries.csv,split,str,False,"Leakage-aware train, validation or test assignment.",True
+weather_timeseries.csv,rainfall_mm_5min,float64,False,Rainfall mm 5min.,True
+weather_timeseries.csv,rainfall_last_30min_mm,float64,False,Rainfall last 30min mm.,True
+weather_timeseries.csv,rainfall_last_1h_mm,float64,False,Rainfall last 1h mm.,True
+weather_timeseries.csv,rainfall_last_3h_mm,float64,False,Rainfall last 3h mm.,True
+weather_timeseries.csv,forecast_rain_probability,float64,False,Forecast rain probability.,True
+weather_timeseries.csv,canal_level_percent,float64,False,Canal level percent.,True
+weather_timeseries.csv,temperature_c,float64,False,Temperature c.,True
+weather_timeseries.csv,humidity_percent,float64,False,Humidity percent.,True
+weather_timeseries.csv,synthetic_data,bool,False,Always true. The record is generated and is not a measured field observation.,True
+sensor_telemetry.csv,timestamp,"datetime64[us, Asia/Dhaka]",False,Timezone-aware observation or event timestamp.,True
+sensor_telemetry.csv,event_id,str,False,Synthetic storm or dry-period identifier.,True
+sensor_telemetry.csv,split,str,False,"Leakage-aware train, validation or test assignment.",True
+sensor_telemetry.csv,location_id,str,False,Synthetic monitored-location identifier.,True
+sensor_telemetry.csv,sensor_id,str,False,Sensor id.,True
+sensor_telemetry.csv,water_level_cm,float64,True,Noisy observed water-level sensor reading.,True
+sensor_telemetry.csv,rainfall_mm_5min,float64,False,Rainfall mm 5min.,True
+sensor_telemetry.csv,battery_percent,float64,False,Battery percent.,True
+sensor_telemetry.csv,signal_quality_percent,float64,False,Signal quality percent.,True
+sensor_telemetry.csv,data_freshness_seconds,int64,False,Data freshness seconds.,True
+sensor_telemetry.csv,sensor_status,str,False,Sensor status.,True
+sensor_telemetry.csv,anomaly_type,str,False,Anomaly type.,True
+sensor_telemetry.csv,missing_flag,bool,False,Missing flag.,True
+sensor_telemetry.csv,synthetic_data,bool,False,Always true. The record is generated and is not a measured field observation.,True
+camera_observations.csv,frame_id,str,False,Frame id.,True
+camera_observations.csv,timestamp,"datetime64[us, Asia/Dhaka]",False,Timezone-aware observation or event timestamp.,True
+camera_observations.csv,event_id,str,False,Synthetic storm or dry-period identifier.,True
+camera_observations.csv,split,str,False,"Leakage-aware train, validation or test assignment.",True
+camera_observations.csv,location_id,str,False,Synthetic monitored-location identifier.,True
+camera_observations.csv,incident_id,str,False,Synthetic contiguous waterlogging-incident identifier.,True
+camera_observations.csv,camera_id,str,False,Camera id.,True
+camera_observations.csv,camera_type,str,False,Camera type.,True
+camera_observations.csv,water_probability,float64,False,Water probability.,True
+camera_observations.csv,estimated_depth_band,str,False,Estimated depth band.,True
+camera_observations.csv,road_block_probability,float64,False,Road block probability.,True
+camera_observations.csv,debris_probability,float64,False,Debris probability.,True
+camera_observations.csv,visibility_score,float64,False,Visibility score.,True
+camera_observations.csv,day_or_night,str,False,Day or night.,True
+camera_observations.csv,camera_available,bool,False,Camera available.,True
+camera_observations.csv,frame_hash,str,False,Frame hash.,True
+camera_observations.csv,model_version,str,False,Model version.,True
+camera_observations.csv,raw_media_available,bool,False,Raw media available.,True
+camera_observations.csv,synthetic_data,bool,False,Always true. The record is generated and is not a measured field observation.,True
+public_reports.csv,report_id,str,False,Report id.,True
+public_reports.csv,timestamp,"datetime64[us, Asia/Dhaka]",False,Timezone-aware observation or event timestamp.,True
+public_reports.csv,event_id,str,False,Synthetic storm or dry-period identifier.,True
+public_reports.csv,split,str,False,"Leakage-aware train, validation or test assignment.",True
+public_reports.csv,location_id,str,False,Synthetic monitored-location identifier.,True
+public_reports.csv,incident_id,str,False,Synthetic contiguous waterlogging-incident identifier.,True
+public_reports.csv,report_text,str,False,Report text.,True
+public_reports.csv,language,str,False,Language.,True
+public_reports.csv,reported_severity,str,False,Reported severity.,True
+public_reports.csv,road_blocked,bool,False,Road blocked.,True
+public_reports.csv,critical_infrastructure_affected,bool,False,Critical infrastructure affected.,True
+public_reports.csv,debris_mentioned,bool,False,Debris mentioned.,True
+public_reports.csv,image_available,bool,False,Image available.,True
+public_reports.csv,reporter_type,str,False,Reporter type.,True
+public_reports.csv,report_credibility,float64,False,Report credibility.,True
+public_reports.csv,duplicate_group_id,str,False,Duplicate group id.,True
+public_reports.csv,is_duplicate,bool,False,Is duplicate.,True
+public_reports.csv,relevant,bool,False,Relevant.,True
+public_reports.csv,verified,bool,False,Verified.,True
+public_reports.csv,synthetic_data,bool,False,Always true. The record is generated and is not a measured field observation.,True
+pump_drain_telemetry.csv,timestamp,"datetime64[us, Asia/Dhaka]",False,Timezone-aware observation or event timestamp.,True
+pump_drain_telemetry.csv,event_id,str,False,Synthetic storm or dry-period identifier.,True
+pump_drain_telemetry.csv,split,str,False,"Leakage-aware train, validation or test assignment.",True
+pump_drain_telemetry.csv,location_id,str,False,Synthetic monitored-location identifier.,True
+pump_drain_telemetry.csv,incident_id,str,False,Synthetic contiguous waterlogging-incident identifier.,True
+pump_drain_telemetry.csv,pump_id,str,False,Pump id.,True
+pump_drain_telemetry.csv,source_water_level_cm,float32,False,Source water level cm.,True
+pump_drain_telemetry.csv,destination_drain_level_percent,float32,False,Destination drain level percent.,True
+pump_drain_telemetry.csv,destination_capacity_available,bool,False,Destination capacity available.,True
+pump_drain_telemetry.csv,pump_state,str,False,Pump state.,True
+pump_drain_telemetry.csv,flow_rate_lps,float32,False,Flow rate lps.,True
+pump_drain_telemetry.csv,motor_current_a,float64,False,Motor current a.,True
+pump_drain_telemetry.csv,motor_temperature_c,float64,False,Motor temperature c.,True
+pump_drain_telemetry.csv,pipe_pressure_bar,float64,False,Pipe pressure bar.,True
+pump_drain_telemetry.csv,pipe_blocked,bool,False,Pipe blocked.,True
+pump_drain_telemetry.csv,dry_run_detected,bool,False,Dry run detected.,True
+pump_drain_telemetry.csv,power_available,bool,False,Power available.,True
+pump_drain_telemetry.csv,emergency_stop,bool,False,Emergency stop.,True
+pump_drain_telemetry.csv,operating_mode,str,False,Operating mode.,True
+pump_drain_telemetry.csv,command_status,str,False,Command status.,True
+pump_drain_telemetry.csv,estimated_clearance_minutes,float32,True,Estimated clearance minutes.,True
+pump_drain_telemetry.csv,synthetic_data,bool,False,Always true. The record is generated and is not a measured field observation.,True
+device_health.csv,timestamp,"datetime64[us, Asia/Dhaka]",False,Timezone-aware observation or event timestamp.,True
+device_health.csv,location_id,str,False,Synthetic monitored-location identifier.,True
+device_health.csv,device_id,str,False,Device id.,True
+device_health.csv,battery_percent,float64,False,Battery percent.,True
+device_health.csv,power_available,bool,False,Power available.,True
+device_health.csv,network_available,bool,False,Network available.,True
+device_health.csv,storage_used_percent,float64,False,Storage used percent.,True
+device_health.csv,queued_records,int64,False,Queued records.,True
+device_health.csv,last_sync_timestamp,str,False,Last sync timestamp.,True
+device_health.csv,firmware_version,str,False,Firmware version.,True
+device_health.csv,device_temperature_c,float64,False,Device temperature c.,True
+device_health.csv,restart_count,int64,False,Restart count.,True
+device_health.csv,health_status,str,False,Health status.,True
+device_health.csv,synthetic_data,bool,False,Always true. The record is generated and is not a measured field observation.,True
+incident_ground_truth.csv,timestamp,"datetime64[us, Asia/Dhaka]",False,Timezone-aware observation or event timestamp.,True
+incident_ground_truth.csv,event_id,str,False,Synthetic storm or dry-period identifier.,True
+incident_ground_truth.csv,split,str,False,"Leakage-aware train, validation or test assignment.",True
+incident_ground_truth.csv,location_id,str,False,Synthetic monitored-location identifier.,True
+incident_ground_truth.csv,incident_id,str,False,Synthetic contiguous waterlogging-incident identifier.,True
+incident_ground_truth.csv,true_water_depth_cm,float32,False,Hidden simulator ground truth. Use only as a training target or evaluation label.,True
+incident_ground_truth.csv,true_severity,str,False,Hidden severity label derived from simulated water depth.,True
+incident_ground_truth.csv,true_road_passability,str,False,True road passability.,True
+incident_ground_truth.csv,true_rise_rate_cm_5min,float32,False,True rise rate cm 5min.,True
+incident_ground_truth.csv,true_debris_present,bool,False,True debris present.,True
+incident_ground_truth.csv,true_pump_required,bool,False,True pump required.,True
+incident_ground_truth.csv,destination_drain_level_percent,float32,False,Destination drain level percent.,True
+incident_ground_truth.csv,drain_blockage_ratio,float32,False,Drain blockage ratio.,True
+incident_ground_truth.csv,verified_by,str,False,Verified by.,True
+incident_ground_truth.csv,synthetic_data,bool,False,Always true. The record is generated and is not a measured field observation.,True
+incidents.csv,incident_id,str,False,Synthetic contiguous waterlogging-incident identifier.,True
+incidents.csv,event_id,str,False,Synthetic storm or dry-period identifier.,True
+incidents.csv,split,str,False,"Leakage-aware train, validation or test assignment.",True
+incidents.csv,location_id,str,False,Synthetic monitored-location identifier.,True
+incidents.csv,start_timestamp,"datetime64[us, Asia/Dhaka]",False,Start timestamp.,True
+incidents.csv,end_timestamp,"datetime64[us, Asia/Dhaka]",False,End timestamp.,True
+incidents.csv,duration_minutes,int64,False,Duration minutes.,True
+incidents.csv,max_water_depth_cm,float64,False,Max water depth cm.,True
+incidents.csv,max_severity,str,False,Max severity.,True
+incidents.csv,max_rise_rate_cm_5min,float64,False,Max rise rate cm 5min.,True
+incidents.csv,road_passability_at_peak,str,False,Road passability at peak.,True
+incidents.csv,debris_observed,bool,False,Debris observed.,True
+incidents.csv,minimum_destination_capacity_percent,float64,False,Minimum destination capacity percent.,True
+incidents.csv,pump_required,bool,False,Pump required.,True
+incidents.csv,pump_available,bool,False,Pump available.,True
+incidents.csv,infrastructure_id,str,False,Infrastructure id.,True
+incidents.csv,infrastructure_type,str,False,Infrastructure type.,True
+incidents.csv,priority_score,float64,False,Priority score.,True
+incidents.csv,priority_class,str,False,Priority class.,True
+incidents.csv,verification_method,str,False,Verification method.,True
+incidents.csv,synthetic_data,bool,False,Always true. The record is generated and is not a measured field observation.,True
+incident_evidence.csv,evidence_id,str,False,Evidence id.,True
+incident_evidence.csv,incident_id,str,False,Synthetic contiguous waterlogging-incident identifier.,True
+incident_evidence.csv,timestamp,"datetime64[us, Asia/Dhaka]",False,Timezone-aware observation or event timestamp.,True
+incident_evidence.csv,evidence_type,str,False,Evidence type.,True
+incident_evidence.csv,source_id,str,False,Source id.,True
+incident_evidence.csv,supports_incident,bool,False,Supports incident.,True
+incident_evidence.csv,confidence,float64,False,"Synthetic source-level evidence confidence, not verified real-world accuracy.",True
+incident_evidence.csv,freshness_seconds,int64,False,Freshness seconds.,True
+incident_evidence.csv,evidence_hash,str,False,Evidence hash.,True
+incident_evidence.csv,synthetic_data,bool,False,Always true. The record is generated and is not a measured field observation.,True
+response_actions.csv,action_id,str,False,Action id.,True
+response_actions.csv,incident_id,str,False,Synthetic contiguous waterlogging-incident identifier.,True
+response_actions.csv,timestamp,"datetime64[us, Asia/Dhaka]",False,Timezone-aware observation or event timestamp.,True
+response_actions.csv,priority_class,str,False,Priority class.,True
+response_actions.csv,priority_score,float64,False,Priority score.,True
+response_actions.csv,system_confidence,float64,False,Synthetic fused confidence for the incident decision.,True
+response_actions.csv,recommended_action,str,False,Recommended action.,True
+response_actions.csv,operator_decision,str,False,Operator decision.,True
+response_actions.csv,pump_command,str,False,Pump command.,True
+response_actions.csv,operating_mode,str,False,Operating mode.,True
+response_actions.csv,destination_capacity_available,bool,False,Destination capacity available.,True
+response_actions.csv,response_time_minutes,int64,False,Response time minutes.,True
+response_actions.csv,resolution_timestamp,"datetime64[us, Asia/Dhaka]",False,Resolution timestamp.,True
+response_actions.csv,status,str,False,Status.,True
+response_actions.csv,synthetic_data,bool,False,Always true. The record is generated and is not a measured field observation.,True
+notifications.csv,notification_id,str,False,Notification id.,True
+notifications.csv,incident_id,str,False,Synthetic contiguous waterlogging-incident identifier.,True
+notifications.csv,timestamp,"datetime64[us, Asia/Dhaka]",False,Timezone-aware observation or event timestamp.,True
+notifications.csv,target_location_id,str,False,Target location id.,True
+notifications.csv,notification_type,str,False,Notification type.,True
+notifications.csv,message,str,False,Message.,True
+notifications.csv,estimated_clearance_minutes,int64,False,Estimated clearance minutes.,True
+notifications.csv,delivery_channel,str,False,Delivery channel.,True
+notifications.csv,delivery_status,str,False,Delivery status.,True
+notifications.csv,synthetic_data,bool,False,Always true. The record is generated and is not a measured field observation.,True
+audit_ledger.csv,record_id,str,False,Record id.,True
+audit_ledger.csv,incident_id,str,False,Synthetic contiguous waterlogging-incident identifier.,True
+audit_ledger.csv,timestamp,"datetime64[us, Asia/Dhaka]",False,Timezone-aware observation or event timestamp.,True
+audit_ledger.csv,event_type,str,False,Event type.,True
+audit_ledger.csv,actor,str,False,Actor.,True
+audit_ledger.csv,payload_json,str,False,Payload json.,True
+audit_ledger.csv,previous_hash,str,False,Hash pointer to the previous tamper-evident ledger record.,True
+audit_ledger.csv,current_hash,str,False,SHA-256 hash for the current tamper-evident ledger record.,True
+audit_ledger.csv,model_version,str,False,Model version.,True
+audit_ledger.csv,synthetic_data,bool,False,Always true. The record is generated and is not a measured field observation.,True
+split_manifest.csv,scope_type,str,False,Scope type.,True
+split_manifest.csv,scope_id,str,False,Scope id.,True
+split_manifest.csv,event_type,str,False,Event type.,True
+split_manifest.csv,start_timestamp,"datetime64[us, Asia/Dhaka]",True,Start timestamp.,True
+split_manifest.csv,end_timestamp,"datetime64[us, Asia/Dhaka]",True,End timestamp.,True
+split_manifest.csv,split,str,False,"Leakage-aware train, validation or test assignment.",True
+split_manifest.csv,holdout_reason,str,False,Holdout reason.,True
+split_manifest.csv,synthetic_data,bool,False,Always true. The record is generated and is not a measured field observation.,True

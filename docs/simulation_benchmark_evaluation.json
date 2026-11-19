@@ -1,0 +1,97 @@
+{
+  "benchmark_label": "Simulation Benchmark",
+  "model_architecture": "Calibrated HistGradientBoosting Pipeline",
+  "training_samples": 239680,
+  "validation_samples": 91520,
+  "test_samples": 100800,
+  "target_leakage_check": "PASS (0 true_* fields used)",
+  "features_used": [
+    "water_level_cm",
+    "rainfall_mm_5min",
+    "battery_percent",
+    "signal_quality_percent",
+    "data_freshness_seconds",
+    "elevation_m",
+    "slope_percent",
+    "impervious_ratio",
+    "runoff_coefficient",
+    "drainage_capacity_mm_5min",
+    "base_blockage_ratio",
+    "ponding_factor"
+  ],
+  "classes": [
+    "Normal",
+    "Watch",
+    "Waterlogged",
+    "Severe"
+  ],
+  "metrics": {
+    "validation_macro_f1": 0.7993,
+    "test_macro_f1": 0.9255,
+    "validation_severe_recall": 0.3897,
+    "test_severe_recall": 0.8345,
+    "test_brier_score_severe": 0.0044,
+    "test_accuracy": 0.9526
+  },
+  "confusion_matrix": {
+    "labels": [
+      "Normal",
+      "Watch",
+      "Waterlogged",
+      "Severe"
+    ],
+    "matrix": [
+      [
+        62263,
+        1587,
+        31,
+        10
+      ],
+      [
+        1307,
+        21374,
+        636,
+        1
+      ],
+      [
+        35,
+        624,
+        10059,
+        81
+      ],
+      [
+        131,
+        27,
+        304,
+        2330
+      ]
+    ]
+  },
+  "per_class_metrics": {
+    "Normal": {
+      "precision": 0.9769,
+      "recall": 0.9745,
+      "f1_score": 0.9757,
+      "support": 63891.0
+    },
+    "Watch": {
+      "precision": 0.9052,
+      "recall": 0.9166,
+      "f1_score": 0.9109,
+      "support": 23318.0
+    },
+    "Waterlogged": {
+      "precision": 0.912,
+      "recall": 0.9315,
+      "f1_score": 0.9216,
+      "support": 10799.0
+    },
+    "Severe": {
+      "precision": 0.962,
+      "recall": 0.8345,
+      "f1_score": 0.8937,
+      "support": 2792.0
+    }
+  },
+  "unseen_location_holdout_status": "EVALUATED"
+}

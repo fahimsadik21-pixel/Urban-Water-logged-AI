@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@100..900&family=Hind+Siliguri:wght@300;400;500;600;700&display=block');
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+:root {
+  --font-sans: 'Figtree', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --font-bn: 'Hind Siliguri', 'Figtree', sans-serif;
+
+  /* Type scale */
+  --fs-display : 55.7px;
+  --fs-title   : calc(var(--dp) * 20);
+  --fs-heading : calc(var(--dp) * 17);
+  --fs-body    : 16.1px;
+  --fs-eyebrow : calc(var(--dp) * 15.8);
+  --fs-ui      : 15px;
+  --fs-meta    : calc(var(--dp) * 14.3);
+  --fs-item    : calc(var(--dp) * 12.9);
+  --fs-caption : calc(var(--dp) * 12.2);
+  --fs-tab     : calc(var(--dp) * 12.1);
+  --fs-sup     : 11.4px;
+  --fs-wordmark: 17.1px;
+
+  /* Weights */
+  --fw-light    : 388;
+  --fw-regular  : 470;
+  --fw-medium   : 500;
+  --fw-semibold : 511;
+  --fw-bold     : 577;
+  --fw-black    : 783;
+
+  /* Tracking */
+  --tr-display : -0.0572em;
+  --tr-title   : -0.0570em;
+  --tr-heading : -0.0200em;
+  --tr-body    : -0.0475em;
+  --tr-eyebrow : -0.0293em;
+  --tr-ui      : -0.0080em;
+  --tr-cta     : -0.0200em;
+  --tr-meta    : -0.0447em;
+  --tr-item    : -0.0287em;
+  --tr-caption : -0.0295em;
+  --tr-tab     : -0.0398em;
+  --tr-wordmark: -0.0075em;
+
+  /* Leading */
+  --lh-display : 61px;
+  --lh-body    : 20px;
+  --lh-flat    : 1;
+
+  /* Bangladesh Municipal Warm Government Identity System */
+  --c-forest-green: #173D35;
+  --c-warm-ivory: #F5F0E6;
+  --c-clean-card: #FFFDF8;
+  --c-soft-stone: #DDD6C8;
+  --c-charcoal: #263238;
+  --c-muted-text: #66706B;
+  --c-moss-green: #5D7A4E;
+  --c-saffron: #B68A35;
+  --c-waterlogged-orange: #C96B35;
+  --c-terracotta: #B85042;
+  --c-offline-gray: #7A817C;
+
+  /* Ink / surfaces */
+  --c-ink      : #263238;
+  --c-ink-soft : #37474F;
+  --c-muted    : #66706B;
+  --c-on-dark  : #ffffff;
+  --c-on-light : #263238;
+  --c-surface-nav   : #173D35;
+  --c-surface-card  : #FFFDF8;
+  --c-surface-panel : #FFFFFF;
+  --c-border-row    : #DDD6C8;
+  --c-accent        : #173D35;
+
+  --u  : 548px;
+  --dp : calc(var(--u) / 548);
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+  background-color: var(--c-warm-ivory);
+  color: var(--c-charcoal);
+}
+
+/* Animations for Government Command Center */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes waterRipple {
+  0% {
+    transform: scale(0.96);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(0.96);
+    opacity: 0.9;
+  }
+}
+
+@keyframes gentlePulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeInUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-water-ripple {
+  animation: waterRipple 3s ease-in-out infinite;
+}
+
+.animate-gentle-pulse {
+  animation: gentlePulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Card hover elevation */
+.gov-card-hover {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.gov-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(23, 61, 53, 0.08), 0 8px 10px -6px rgba(23, 61, 53, 0.04);
+}
+
+/* Leaflet map styles */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  font-family: inherit;
+  z-index: 1;
+}
+
+/* Custom pulsing marker styling for live severe flood alerts */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  70% {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 12px rgba(239, 68, 68, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.pulse-marker-severe {
+  animation: pulse-ring 1.8s infinite;
+  border-radius: 9999px;
+}
+
+/* Dark Theme Tooltip for Mini GIS Map */
+.leaflet-dark-tooltip {
+  background-color: #0a0f1d !important;
+  color: #f1f5f9 !important;
+  border: 1px solid #334155 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.8), 0 8px 10px -6px rgba(0, 0, 0, 0.6) !important;
+  padding: 6px 10px !important;
+}
+
+.leaflet-dark-tooltip::before {
+  border-top-color: #334155 !important;
+}

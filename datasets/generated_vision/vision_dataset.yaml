@@ -1,0 +1,15 @@
+# Urban Water-logged AI - Dhaka CCTV Synthetic Vision Benchmark
+# Notice: Synthetic-trained simulation model — not field validated.
+
+path: U:/Urban Water-logged AI/storage/camera_frames/synthetic_benchmark/images
+train: train
+val: val
+test: test
+
+names:
+  0: water_shallow
+  1: water_knee
+  2: water_severe
+  3: debris
+  4: drain_inlet_blockage
+  5: road_obstruction

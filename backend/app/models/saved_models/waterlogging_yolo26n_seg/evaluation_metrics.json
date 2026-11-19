@@ -1,0 +1,76 @@
+{
+  "status": "PASS",
+  "model_architecture": "yolo26n-seg / yolov8n-seg",
+  "test_dataset": {
+    "split": "test",
+    "samples_count": 70,
+    "unseen_locations_count": 7,
+    "locations": [
+      "LOC_044",
+      "LOC_045",
+      "LOC_046",
+      "LOC_047",
+      "LOC_048",
+      "LOC_049",
+      "LOC_050"
+    ],
+    "leakage_free": true
+  },
+  "overall_metrics": {
+    "mask_precision": 0.6973,
+    "mask_recall": 0.5202,
+    "mask_mAP50": 0.4966,
+    "mask_mAP50_95": 0.4297,
+    "box_precision": 0.6973,
+    "box_recall": 0.5202,
+    "box_mAP50": 0.4981,
+    "box_mAP50_95": 0.4451
+  },
+  "per_class_segmentation": {
+    "water_shallow": {
+      "class_id": 0,
+      "precision": 0.7265,
+      "recall": 0.7222,
+      "mAP50": 0.0
+    },
+    "water_knee": {
+      "class_id": 1,
+      "precision": 0.973,
+      "recall": 1.0,
+      "mAP50": 0.0
+    },
+    "water_severe": {
+      "class_id": 2,
+      "precision": 0.9497,
+      "recall": 1.0,
+      "mAP50": 0.0
+    },
+    "debris": {
+      "class_id": 3,
+      "precision": 0.2007,
+      "recall": 0.1132,
+      "mAP50": 0.0
+    },
+    "drain_inlet_blockage": {
+      "class_id": 4,
+      "precision": 1.0,
+      "recall": 0.0,
+      "mAP50": 0.0
+    },
+    "road_obstruction": {
+      "class_id": 5,
+      "precision": 0.3336,
+      "recall": 0.2857,
+      "mAP50": 0.0
+    }
+  },
+  "inference_latency": {
+    "preprocess_ms": 3.82,
+    "inference_ms": 103.23,
+    "postprocess_ms": 0.0,
+    "total_latency_ms": 107.05,
+    "fps_estimate": 9.3
+  },
+  "simulation_disclaimer": "Synthetic-trained simulation model \u2014 not field validated.",
+  "evaluated_at": "2026-11-18T20:27:23+06:00"
+}

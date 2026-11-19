@@ -1,0 +1,2 @@
+project_name,city_profile,dataset_version,random_seed,timezone,start_timestamp,end_timestamp,interval_minutes,location_count,simulation_days,severity_thresholds_cm,production_accuracy_claimed,synthetic_data
+Urban Water-logged AI,"Dhaka Simulation Benchmark (Real Geography, Synthetic Telemetry)",1.0.0-synthetic,20261116,Asia/Dhaka,2026-06-01 00:00:00+06:00,2026-06-30 23:55:00+06:00,5,50,30,Normal<2; Watch=2-<10; Waterlogged=10-<25; Severe>=25,False,True
