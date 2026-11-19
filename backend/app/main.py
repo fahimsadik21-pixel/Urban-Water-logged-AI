@@ -30,6 +30,13 @@ from backend.app.services.seed_service import seed_database
 async def lifespan(_: FastAPI):
     """Initialize schema and baseline data once per application lifecycle."""
     seed_database()
+    try:
+        from backend.app.services.ml_inference_service import MLInferenceService
+        ml = MLInferenceService.get_instance()
+        # Warm up ML pipeline and JIT during boot so users experience 0s cold-start
+        ml.predict_severity({"water_level_cm": 15.0, "rainfall_mm_5min": 3.0})
+    except Exception as e:
+        pass
     yield
 
 app = FastAPI(
