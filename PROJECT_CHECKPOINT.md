@@ -1,6 +1,18 @@
 # Urban Water-logged AI Project Checkpoint
 
-Last updated: 2026-11-19 23:43, Asia/Dhaka
+Last updated: 2026-11-20 00:15, Asia/Dhaka
+
+Checkpoint ID: `CP-042-VERCEL-BUILD-FIX-AND-RENDER-CONNECT`
+
+## Current Status
+
+Successfully configured Vercel frontend build for monorepo and verified Render live backend connection:
+1. **Render Backend Live & Verified**: Confirmed Render service is healthy and active at `https://urban-water-logged-ai-backend.onrender.com/` (HTTP 200, all 50 locations loaded and initialized).
+2. **Vercel Build Command & Dependency Resolution**: Resolved `tsc: command not found` error by ensuring the root `package.json` and `vercel.json` instruct Vercel to install frontend dependencies (`cd frontend && npm install && npm run build`) and output to `frontend/dist`. Added root `package.json` so Vercel detects a Node.js project instead of falling back to Python.
+3. **Automatic Backend Connection**: In `frontend/src/lib/api.ts`, configured automatic fallback to `https://urban-water-logged-ai-backend.onrender.com` in production mode (`import.meta.env.PROD`), with optional override via `VITE_API_BASE_URL`.
+4. **Cross-Origin Authentication**: Bearer token and credentials handling implemented across cross-site domains.
+
+---
 
 Checkpoint ID: `CP-041-GITHUB-REMOTE-PUSH`
 
