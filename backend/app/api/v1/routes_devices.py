@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import time
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import Any
@@ -16,6 +17,7 @@ router = APIRouter(
     prefix="/devices",
     tags=["devices"],
 )
+_device_health_cache: dict[str, Any] = {"data": [], "timestamp": 0.0}
 
 
 class ModeUpdateRequest(BaseModel):
@@ -25,10 +27,22 @@ class ModeUpdateRequest(BaseModel):
 @router.get("/health")
 def get_devices_health(db: Session = Depends(get_db)) -> list[dict[str, Any]]:
     """List all 50 Dhaka monitored edge nodes with live power, network, battery, warning and offline status."""
+    now = time.time()
+    if _device_health_cache["data"] and (now - _device_health_cache["timestamp"] < 8.0):
+        return _device_health_cache["data"]
+
     daemon = EdgeSimulatorDaemon.get_instance()
     results = []
 
     locations = db.query(Location).order_by(Location.location_id.asc()).all()
+
+    # Pre-fetch all devices in a single query (replaces 50 individual database roundtrips)
+    devices = (
+        db.query(Device)
+        .filter(Device.device_type.in_(["edge_gateway", "ultrasonic_water_level"]))
+        .all()
+    )
+    dev_by_loc = {d.location_id: d for d in devices}
 
     # Predefined simulation anomalies for Dhaka environmental testing
     offline_locs = {"LOC_009", "LOC_023", "LOC_041"}
@@ -36,11 +50,7 @@ def get_devices_health(db: Session = Depends(get_db)) -> list[dict[str, Any]]:
 
     for loc in locations:
         loc_id = loc.location_id
-        dev = (
-            db.query(Device)
-            .filter(Device.location_id == loc_id, Device.device_type.in_(["edge_gateway", "ultrasonic_water_level"]))
-            .first()
-        )
+        dev = dev_by_loc.get(loc_id)
         dev_id = dev.device_id if dev else f"EDGE_{loc_id.replace('LOC_', '')}"
         power_src = dev.power_source if dev else "Solar + Battery"
         firmware = dev.firmware_version if dev else "v2.4.1-edge"
@@ -91,6 +101,8 @@ def get_devices_health(db: Session = Depends(get_db)) -> list[dict[str, Any]]:
             "firmware_version": firmware,
         })
 
+    _device_health_cache["data"] = results
+    _device_health_cache["timestamp"] = now
     return results
 
 

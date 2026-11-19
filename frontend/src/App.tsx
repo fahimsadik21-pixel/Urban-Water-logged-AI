@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Cpu, Loader2, RefreshCw, TriangleAlert } from 'lucide-react';
 import { Sidebar, type MainTabType } from './components/Sidebar';
 import { GovernmentHeader } from './components/GovernmentHeader';
@@ -67,10 +67,21 @@ export default function App() {
     }
   });
   const [selectedHotspot, setSelectedHotspot] = useState<HotspotFeature | null>(null);
-  const [incidents, setIncidents] = useState<IncidentRecord[]>([]);
+  const [incidents, setIncidents] = useState<IncidentRecord[]>(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        const cached = sessionStorage.getItem('uwai_incidents');
+        if (cached) return JSON.parse(cached);
+      }
+    } catch {
+      // ignore
+    }
+    return [];
+  });
   const [syncCadence, setSyncCadence] = useState(15);
   const [isSyncing, setIsSyncing] = useState(false);
   const [lastSyncedTime, setLastSyncedTime] = useState('—');
+  const healthFailuresRef = useRef<number>(0);
 
   // Simulation Demo Sandbox & Video Tour State
   const [isSimulationModalOpen, setIsSimulationModalOpen] = useState(false);
@@ -179,10 +190,14 @@ export default function App() {
   const checkHealth = useCallback(async () => {
     try {
       await apiFetch<{ status: string }>('/health');
+      healthFailuresRef.current = 0;
       setBackendConnected(true);
       return true;
     } catch {
-      setBackendConnected(false);
+      healthFailuresRef.current += 1;
+      if (healthFailuresRef.current >= 3) {
+        setBackendConnected(false);
+      }
       return false;
     }
   }, []);
@@ -195,6 +210,7 @@ export default function App() {
         setInfrastructure(data.critical_infrastructure?.features ?? []);
         setDrains(data.drains ?? []);
         setMapError(null);
+        healthFailuresRef.current = 0;
         setBackendConnected(true);
         try {
           if (typeof window !== 'undefined') {
@@ -221,6 +237,15 @@ export default function App() {
     try {
       const data = await apiFetch<IncidentRecord[]>('/api/v1/incidents/');
       setIncidents(data ?? []);
+      healthFailuresRef.current = 0;
+      setBackendConnected(true);
+      try {
+        if (typeof window !== 'undefined' && data?.length) {
+          sessionStorage.setItem('uwai_incidents', JSON.stringify(data));
+        }
+      } catch {
+        // ignore
+      }
     } catch {
       // The map can still show the last trusted layer data if incidents are unavailable.
     }

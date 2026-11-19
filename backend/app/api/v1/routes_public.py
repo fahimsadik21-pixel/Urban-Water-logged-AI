@@ -17,6 +17,7 @@ from backend.app.services.eta_service import ETACalculator
 from backend.app.api.v1.routes_map import DHAKA_ZONE_BN
 
 router = APIRouter(prefix="/public", tags=["public"])
+_advisories_cache: dict[str, Any] = {"data": [], "timestamp": 0.0}
 
 # Authentic Bangla road names for Dhaka network
 DHAKA_ROADS_BN: dict[str, str] = {
@@ -71,6 +72,10 @@ def get_road_advisories(db: Session = Depends(get_db)) -> list[dict[str, Any]]:
     """Single Source of Truth: Recomputed dynamically from verified incidents,
     operator triage, debris hazard dispatches, and pump state.
     """
+    now = time.time()
+    if _advisories_cache["data"] and (now - _advisories_cache["timestamp"] < 8.0):
+        return _advisories_cache["data"]
+
     now_ts = time.strftime("%Y-%m-%dT%H:%M:%S+06:00")
 
     # 1. Fetch top affected locations
@@ -97,12 +102,16 @@ def get_road_advisories(db: Session = Depends(get_db)) -> list[dict[str, Any]]:
     )
     blocked_loc_ids = {r.location_id for r in blocked_reports}
 
+    # Pre-fetch locations and roads in 2 single batch queries (replaces 60 loop queries)
+    loc_map = {loc.location_id: loc for loc in db.query(Location).all()}
+    road_map = {road.location_id: road for road in db.query(Road).all()}
+
     results = []
     seen_roads: set[str] = set()
 
     for inc in active_incidents:
-        loc = db.query(Location).filter(Location.location_id == inc.location_id).first()
-        road = db.query(Road).filter(Road.location_id == inc.location_id).first()
+        loc = loc_map.get(inc.location_id)
+        road = road_map.get(inc.location_id)
 
         road_name = road.road_name if road else f"{loc.zone_name if loc else inc.location_id} Access Rd"
         if road_name in seen_roads:
@@ -181,7 +190,10 @@ def get_road_advisories(db: Session = Depends(get_db)) -> list[dict[str, Any]]:
     # Sort: Closed first, then Restricted, then Caution, then Open
     priority_order = {"Closed": 0, "Restricted": 1, "Caution": 2, "Open": 3}
     results.sort(key=lambda x: priority_order.get(x["passability"], 4))
-    return results[:15]
+    final_results = results[:15]
+    _advisories_cache["data"] = final_results
+    _advisories_cache["timestamp"] = now
+    return final_results
 
 
 @router.get("/alerts")

@@ -26,6 +26,7 @@ router = APIRouter(
 
 # Registry for post-dewatering debris escalation & dispatch tasks
 DEBRIS_TASKS: dict[str, dict[str, Any]] = {}
+_incidents_cache: dict[str, dict[str, Any]] = {}
 
 
 class DebrisEscalationRequest(BaseModel):
@@ -49,6 +50,11 @@ def list_incidents(
     db: Session = Depends(get_db),
 ) -> list[dict[str, Any]]:
     """List waterlogging incidents with live ML predictions, XAI attributions and priority metadata."""
+    now = time.time()
+    cache_key = f"{priority}_{severity}_{limit}"
+    if cache_key in _incidents_cache and (now - _incidents_cache[cache_key]["timestamp"] < 6.0):
+        return _incidents_cache[cache_key]["data"]
+
     query = db.query(Incident)
     if priority:
         query = query.filter(Incident.priority_class == priority.upper())
@@ -58,12 +64,16 @@ def list_incidents(
     incidents = query.order_by(Incident.priority_score.desc()).limit(limit).all()
     ml_service = MLInferenceService.get_instance()
 
+    # Pre-fetch locations and infrastructure in 2 batch queries (replaces 100 loop queries)
+    loc_map = {l.location_id: l for l in db.query(Location).all()}
+    infra_map = {i.infrastructure_id: i for i in db.query(CriticalInfrastructure).all()}
+
     results = []
     for inc in incidents:
-        loc = db.query(Location).filter(Location.location_id == inc.location_id).first()
+        loc = loc_map.get(inc.location_id)
         infra_name = None
         if inc.infrastructure_id:
-            infra_rec = db.query(CriticalInfrastructure).filter(CriticalInfrastructure.infrastructure_id == inc.infrastructure_id).first()
+            infra_rec = infra_map.get(inc.infrastructure_id)
             if infra_rec:
                 infra_name = infra_rec.name
 
@@ -130,6 +140,8 @@ def list_incidents(
             "ml_explanation_bn": ml_res["explanation_bn"],
             "ml_key_drivers": ml_res["key_drivers"],
         })
+
+    _incidents_cache[cache_key] = {"data": results, "timestamp": now}
     return results
 
 

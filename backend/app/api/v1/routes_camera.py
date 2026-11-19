@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import csv
 import json
+import time
 from dataclasses import asdict
 from pathlib import Path
 from typing import Any, Optional
@@ -27,6 +28,7 @@ router = APIRouter(
     tags=["cameras"],
     dependencies=[Depends(require_roles("analyst", "operator", "admin"))],
 )
+_camera_streams_cache: dict[str, Any] = {"data": [], "timestamp": 0.0}
 
 BASE_DIR = Path(settings.BASE_DIR)
 IMAGES_ROOT = BASE_DIR / "storage" / "camera_frames" / "synthetic_benchmark" / "images"
@@ -50,23 +52,34 @@ class FrameAnalysisRequest(BaseModel):
 @router.get("/streams")
 def list_camera_streams(db: Session = Depends(get_db)) -> list[dict[str, Any]]:
     """List all registered traffic and surveillance camera streams across Dhaka."""
+    now = time.time()
+    if _camera_streams_cache["data"] and (now - _camera_streams_cache["timestamp"] < 8.0):
+        return _camera_streams_cache["data"]
+
     gw = get_camera_gateway()
     streams = gw.list_streams()
+
+    # Pre-fetch recent telemetry in 1 batch query (replaces 48 sequential full-table scans)
+    recent_tels = (
+        db.query(SensorTelemetry)
+        .order_by(SensorTelemetry.timestamp.desc())
+        .limit(200)
+        .all()
+    )
+    tel_by_loc = {t.location_id: t for t in reversed(recent_tels)}
 
     # Enrich with latest sensor telemetry
     enriched = []
     for s in streams:
         loc_id = s.get("location_id")
-        latest_tel = (
-            db.query(SensorTelemetry)
-            .filter(SensorTelemetry.location_id == loc_id)
-            .order_by(SensorTelemetry.timestamp.desc())
-            .first()
-        )
+        latest_tel = tel_by_loc.get(loc_id)
         s_copy = dict(s)
         s_copy["latest_wls_depth_cm"] = round(latest_tel.water_level_cm, 1) if latest_tel else 0.0
         s_copy["wls_health_status"] = getattr(latest_tel, "health_status", "HEALTHY")
         enriched.append(s_copy)
+
+    _camera_streams_cache["data"] = enriched
+    _camera_streams_cache["timestamp"] = now
     return enriched
 
 

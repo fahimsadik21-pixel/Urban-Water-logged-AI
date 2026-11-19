@@ -28,12 +28,32 @@ export const IoTCameraFleetView: React.FC = () => {
   const [cameraFilter, setCameraFilter] = useState<'all' | 'ip' | 'analog'>('all');
   const [cameraStatusFilter, setCameraStatusFilter] = useState<'ALL' | 'ONLINE' | 'WARNING' | 'OFFLINE'>('ALL');
   const [nodePage, setNodePage] = useState<number>(1);
-  const [sampleNodes, setSampleNodes] = useState<DeviceNodeData[]>([]);
+  const [sampleNodes, setSampleNodes] = useState<DeviceNodeData[]>(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        const cached = sessionStorage.getItem('uwai_fleet_nodes');
+        if (cached) return JSON.parse(cached);
+      }
+    } catch {
+      // ignore
+    }
+    return [];
+  });
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
 
   // Camera & Edge AI state
-  const [cameraStreams, setCameraStreams] = useState<any[]>([]);
+  const [cameraStreams, setCameraStreams] = useState<any[]>(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        const cached = sessionStorage.getItem('uwai_camera_streams');
+        if (cached) return JSON.parse(cached);
+      }
+    } catch {
+      // ignore
+    }
+    return [];
+  });
   const [cameraSearch, setCameraSearch] = useState<string>('');
   const [inspectingCamera, setInspectingCamera] = useState<any | null>(null);
   const [inspectingFrameIdx, setInspectingFrameIdx] = useState<number>(4);
@@ -198,6 +218,13 @@ export const IoTCameraFleetView: React.FC = () => {
           };
         });
         setSampleNodes(nodes);
+        try {
+          if (typeof window !== 'undefined' && nodes.length > 0) {
+            sessionStorage.setItem('uwai_fleet_nodes', JSON.stringify(nodes));
+          }
+        } catch {
+          // ignore
+        }
       })
       .catch((error) => console.warn('Device health fetch failed:', error));
   }, []);
@@ -205,7 +232,18 @@ export const IoTCameraFleetView: React.FC = () => {
   // Fetch camera streams when sub-tab switches or on mount
   useEffect(() => {
     apiFetch<any[]>('/api/v1/cameras/streams')
-      .then((data) => setCameraStreams(data))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setCameraStreams(data);
+          try {
+            if (typeof window !== 'undefined') {
+              sessionStorage.setItem('uwai_camera_streams', JSON.stringify(data));
+            }
+          } catch {
+            // ignore
+          }
+        }
+      })
       .catch((err) => console.warn('Camera streams fetch failed:', err));
   }, [activeSubTab]);
 

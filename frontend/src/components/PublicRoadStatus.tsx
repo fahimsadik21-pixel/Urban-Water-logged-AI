@@ -15,16 +15,38 @@ import {
 export const PublicRoadStatus: React.FC = () => {
   const { lang, formatNumber } = useLanguage();
   const bn = lang === 'bn';
-  const [advisories, setAdvisories] = useState<PublicRoadAdvisory[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [advisories, setAdvisories] = useState<PublicRoadAdvisory[]>(() => {
+    try {
+      const raw = typeof window !== 'undefined' ? sessionStorage.getItem('uwai_public_advisories') : null;
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [loading, setLoading] = useState<boolean>(() => {
+    try {
+      const raw = typeof window !== 'undefined' ? sessionStorage.getItem('uwai_public_advisories') : null;
+      return !raw;
+    } catch {
+      return true;
+    }
+  });
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<string>('ALL');
 
   const fetchStatus = async () => {
     try {
-      setLoading(true);
       const data = await apiFetch<PublicRoadAdvisory[]>('/api/v1/public/status');
-      setAdvisories(data);
+      if (Array.isArray(data) && data.length > 0) {
+        setAdvisories(data);
+        try {
+          if (typeof window !== 'undefined') {
+            sessionStorage.setItem('uwai_public_advisories', JSON.stringify(data));
+          }
+        } catch {
+          // ignore storage quota error
+        }
+      }
     } catch (err: any) {
       console.warn('Failed to load public road status:', err.message);
     } finally {

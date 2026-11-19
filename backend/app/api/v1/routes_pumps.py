@@ -50,17 +50,24 @@ class DewateringJobDispatchAction(BaseModel):
 
 # Dynamic runtime state for pumps (holds live operating state, mode, e-stop latch, and simulated overrides)
 RUNTIME_PUMP_STATES: dict[str, dict[str, Any]] = {}
+_pumps_list_cache: dict[str, dict[str, Any]] = {}
 
 
-def get_live_sensor_telemetry(location_id: str, db: Session) -> dict[str, Any]:
+def get_live_sensor_telemetry(
+    location_id: str,
+    db: Session,
+    sensor_rec: SensorTelemetry | None = None,
+    drain_rec: PumpDrainTelemetry | None = None,
+) -> dict[str, Any]:
     """Fetch live WLS (water level) and DLS (drain level) sensor readings for a location."""
     # 1. Ultrasonic water level sensor (WLS)
-    sensor_rec = (
-        db.query(SensorTelemetry)
-        .filter(SensorTelemetry.location_id == location_id)
-        .order_by(SensorTelemetry.timestamp.desc(), SensorTelemetry.id.desc())
-        .first()
-    )
+    if sensor_rec is None:
+        sensor_rec = (
+            db.query(SensorTelemetry)
+            .filter(SensorTelemetry.location_id == location_id)
+            .order_by(SensorTelemetry.timestamp.desc(), SensorTelemetry.id.desc())
+            .first()
+        )
     raw_depth = (
         float(sensor_rec.water_level_cm)
         if (sensor_rec and sensor_rec.water_level_cm is not None)
@@ -79,12 +86,13 @@ def get_live_sensor_telemetry(location_id: str, db: Session) -> dict[str, Any]:
     water_depth = round(max(raw_depth + 12.0, 18.5), 1)
 
     # 2. Destination drain level sensor (DLS)
-    drain_rec = (
-        db.query(PumpDrainTelemetry)
-        .filter(PumpDrainTelemetry.location_id == location_id)
-        .order_by(PumpDrainTelemetry.timestamp.desc(), PumpDrainTelemetry.id.desc())
-        .first()
-    )
+    if drain_rec is None:
+        drain_rec = (
+            db.query(PumpDrainTelemetry)
+            .filter(PumpDrainTelemetry.location_id == location_id)
+            .order_by(PumpDrainTelemetry.timestamp.desc(), PumpDrainTelemetry.id.desc())
+            .first()
+        )
     drain_level = (
         round(float(drain_rec.destination_drain_level_percent), 1)
         if (drain_rec and drain_rec.destination_drain_level_percent is not None)
@@ -112,11 +120,17 @@ def get_live_sensor_telemetry(location_id: str, db: Session) -> dict[str, Any]:
     }
 
 
-def get_pump_runtime_state(pump_id: str, location_id: str, db: Session) -> dict[str, Any]:
+def get_pump_runtime_state(
+    pump_id: str,
+    location_id: str,
+    db: Session,
+    sensor_rec: SensorTelemetry | None = None,
+    drain_rec: PumpDrainTelemetry | None = None,
+) -> dict[str, Any]:
     """Retrieve or initialize dynamic runtime state for an asset using live sensor telemetry."""
     clean_id = pump_id.replace("-", "_").upper()
     if clean_id not in RUNTIME_PUMP_STATES:
-        telemetry = get_live_sensor_telemetry(location_id, db)
+        telemetry = get_live_sensor_telemetry(location_id, db, sensor_rec=sensor_rec, drain_rec=drain_rec)
         RUNTIME_PUMP_STATES[clean_id] = {
             "pump_id": pump_id,
             "location_id": location_id,
@@ -145,6 +159,11 @@ def list_pumps(
     db: Session = Depends(get_db),
 ) -> list[dict[str, Any]]:
     """List all 50 dewatering assets (17 permanent + 33 mobile) with live telemetry and safety gate evaluations."""
+    now = time.time()
+    cache_key = f"{category}_{search}_{queue_only}"
+    if not search and cache_key in _pumps_list_cache and (now - _pumps_list_cache[cache_key]["timestamp"] < 6.0):
+        return _pumps_list_cache[cache_key]["data"]
+
     all_assets = DewateringAssetService.get_all_assets(db)
     results = []
 
@@ -158,6 +177,23 @@ def list_pumps(
     for j in active_jobs:
         job_map[j.location_id] = j
         job_map[j.pump_id.replace("-", "_").upper()] = j
+
+    # Pre-fetch recent telemetry in 2 single batch queries (replaces 100 sequential table scans)
+    recent_sensors = (
+        db.query(SensorTelemetry)
+        .order_by(SensorTelemetry.timestamp.desc())
+        .limit(200)
+        .all()
+    )
+    sensor_by_loc = {t.location_id: t for t in reversed(recent_sensors)}
+
+    recent_drains = (
+        db.query(PumpDrainTelemetry)
+        .order_by(PumpDrainTelemetry.timestamp.desc())
+        .limit(200)
+        .all()
+    )
+    drain_by_loc = {d.location_id: d for d in reversed(recent_drains)}
 
     for asset in all_assets:
         loc_id = asset["location_id"]
@@ -187,12 +223,23 @@ def list_pumps(
 
         # Active job or currently running pump check
         active_job = job_map.get(loc_id) or job_map.get(clean_pump_id)
-        state = get_pump_runtime_state(pump_id, loc_id, db)
+        state = get_pump_runtime_state(
+            pump_id,
+            loc_id,
+            db,
+            sensor_rec=sensor_by_loc.get(loc_id),
+            drain_rec=drain_by_loc.get(loc_id),
+        )
         is_active = (state["pump_state"] == "ON")
         if queue_only and not (active_job or is_active):
             continue
 
-        live_telemetry = get_live_sensor_telemetry(loc_id, db)
+        live_telemetry = get_live_sensor_telemetry(
+            loc_id,
+            db,
+            sensor_rec=sensor_by_loc.get(loc_id),
+            drain_rec=drain_by_loc.get(loc_id),
+        )
 
         # Use live sensor telemetry unless operator explicitly simulated conditions via sandbox
         if not state.get("is_simulated_override", False):
@@ -261,6 +308,7 @@ def list_pumps(
             "longitude": asset["longitude"],
         })
 
+    _pumps_list_cache[cache_key] = {"data": results, "timestamp": now}
     return results
 
 

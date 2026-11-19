@@ -36,6 +36,7 @@ router = APIRouter(
 
 # Registry for operator tasks forwarded to analyst
 ANALYST_FORWARDED_TASKS: dict[str, dict[str, Any]] = {}
+_notifs_cache: dict[str, dict[str, Any]] = {}
 
 
 class ReportTriageRequest(BaseModel):
@@ -53,6 +54,11 @@ def get_operator_notifications(
     db: Session = Depends(get_db),
 ) -> dict[str, Any]:
     """Retrieve operator-only citizen report notifications with unread count."""
+    now = time.time()
+    cache_key = f"{limit}_{status_filter}"
+    if cache_key in _notifs_cache and (now - _notifs_cache[cache_key]["timestamp"] < 6.0):
+        return _notifs_cache[cache_key]["data"]
+
     query = db.query(OperatorNotification)
     if status_filter:
         query = query.filter(OperatorNotification.status == status_filter.upper())
@@ -60,12 +66,18 @@ def get_operator_notifications(
     notifications = query.order_by(OperatorNotification.created_at.desc()).limit(limit).all()
     unread_count = db.query(OperatorNotification).filter(OperatorNotification.status == "UNREAD").count()
 
+    report_ids = [n.report_id for n in notifications if n.report_id]
+    img_map = {
+        img.report_id: img
+        for img in db.query(ReportImage).filter(ReportImage.report_id.in_(report_ids)).all()
+    } if report_ids else {}
+
     items = []
     for n in notifications:
         # Check if photo has Gemini analysis
         gemini_summary = None
         gemini_provider = None
-        img = db.query(ReportImage).filter(ReportImage.report_id == n.report_id).first()
+        img = img_map.get(n.report_id)
         if img and img.gemini_analysis:
             try:
                 g_data = json.loads(img.gemini_analysis)
@@ -97,11 +109,13 @@ def get_operator_notifications(
             "created_at": n.created_at,
         })
 
-    return {
+    result_data = {
         "unread_count": unread_count,
         "total_count": len(items),
         "notifications": items,
     }
+    _notifs_cache[cache_key] = {"data": result_data, "timestamp": now}
+    return result_data
 
 
 @router.post("/notifications/{notification_id}/acknowledge")
