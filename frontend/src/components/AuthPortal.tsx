@@ -21,6 +21,7 @@ import {
   Pause,
   ChevronLeft,
   ChevronRight,
+  BookOpen,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -131,7 +132,7 @@ const roleInfo: Record<UserRole, { label: string; labelBn: string; icon: typeof 
   },
 };
 
-export function AuthPortal() {
+export function AuthPortal({ onOpenDocs }: { onOpenDocs?: () => void } = {}) {
   const { login, registerUser } = useAuth();
   const { lang, setLang } = useLanguage();
   const [portal, setPortal] = useState<AuthPortalName>('operations');
@@ -424,6 +425,23 @@ export function AuthPortal() {
               </button>
             </div>
           </div>
+
+          {/* Direct /docs Pitch Deck & Whitepaper Showcase Button */}
+          {onOpenDocs && (
+            <button
+              type="button"
+              onClick={onOpenDocs}
+              className="w-full py-2.5 px-4 rounded-2xl border border-[#B68A35]/50 bg-gradient-to-r from-[#B68A35]/15 via-[#FFFDF8] to-[#173D35]/10 hover:border-[#173D35] hover:shadow-md text-xs font-bold text-[#173D35] flex items-center justify-between transition cursor-pointer"
+            >
+              <span className="flex items-center gap-2">
+                <BookOpen className="w-4 h-4 text-[#B68A35]" />
+                <span>{lang === 'bn' ? '📖 লাইভ ডকস ও পিচ ডেক (/docs)' : '📖 Live Pitch Deck & Tech Docs (/docs)'}</span>
+              </span>
+              <span className="text-[10px] uppercase font-black text-[#B68A35] bg-[#B68A35]/15 px-2 py-0.5 rounded border border-[#B68A35]/30">
+                YC Pitch Deck
+              </span>
+            </button>
+          )}
 
           {/* Quick Demo 1-Click Login Bar at TOP for instant convenience */}
           <div className="rounded-2xl border border-[#DDD6C8] bg-[#FFFDF8] p-3.5 space-y-2 shadow-sm">

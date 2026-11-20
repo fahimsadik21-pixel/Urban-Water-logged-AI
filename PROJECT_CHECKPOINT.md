@@ -1,6 +1,32 @@
 # Urban Water-logged AI Project Checkpoint
 
-Last updated: 2026-11-20 18:55, Asia/Dhaka
+Last updated: 2026-11-20 20:25, Asia/Dhaka
+
+Checkpoint ID: `CP-051-LIVE-DOCS-AND-PITCH-DECK-MODULE`
+
+## Current Status
+
+Implemented and shipped live `/docs` module (YC-style pitch deck + technical whitepaper + admin visibility scheduling + Team AI Crasher showcase):
+1. **Implementation Completed**:
+   - `frontend/src/components/LiveDocsModule.tsx`: Comprehensive, interactive documentation system accessible via `/docs` (or `#docs`) and navigation tabs. Combines:
+     - YC-Style Pitch Deck: Problem, Solution, Market Opportunity ($14M), Business Model ($1,200/mo/ward), Traction, Moat, and Vision.
+     - Technical Architecture & Data Flow: Visual end-to-end pipeline diagrams (Ingestion -> AI Inference -> 12 Safety Gates -> Actuation -> SHA-256 Ledger).
+     - 12 Hardware Deterministic Safety Interlocks: Detailed breakdown of physical gates.
+     - API & Model Context Protocol (MCP) Documentation: Interactive listing of REST and JSON-RPC 2.0 tools.
+     - Team AI Crasher Showcase (Mandatory Enhancement): SK Fahim Sadik (Team Lead), Farhan Uddin Jibon, Md. Ashikur Rahaman 241-15-128, Fariha Jahan Safa, Md Farhan Mahamud with real avatars and roles.
+     - Admin Access Control & Scheduling: Public visibility toggle (ON/OFF), date/time availability window (June 10-14 default), and announcement note editor.
+     - Export & Sharing: 1-click PDF print export, shareable link copy, and instant live app navigation.
+   - `frontend/src/App.tsx`: Wired route listener so unauthenticated public visitors / judges can access `/docs` directly without login restrictions.
+   - `frontend/src/components/AuthPortal.tsx`: Added 1-click "📖 Live Pitch Deck & Tech Docs (/docs)" button at the top of the authentication screen.
+   - `frontend/src/components/GovernmentHeader.tsx`: Added persistent "📖 Docs & Pitch (/docs)" button in header.
+   - `frontend/src/components/Sidebar.tsx`: Added "Live Docs & Pitch" menu item with 'YC /docs' badge for all roles.
+2. **Validation**:
+   - Frontend build (`npm.cmd --prefix frontend run build`): PASSED with 0 errors in 1.25s.
+   - Baseline dataset preservation check (`python scripts/validate_synthetic_datasets.py datasets`): PASSED (20 CSV files, 1,214,992 rows intact).
+3. **Resume From Here**:
+   - Ready for final submission on CloudCamp Bangladesh platform.
+
+---
 
 Checkpoint ID: `CP-050-MODEL-CONTEXT-PROTOCOL-MCP-SERVER-IMPLEMENTATION`
 

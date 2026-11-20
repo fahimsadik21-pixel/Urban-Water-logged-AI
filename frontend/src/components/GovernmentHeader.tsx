@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Bell, Languages, LogOut, RefreshCw, ShieldCheck, Wifi, WifiOff, Activity } from 'lucide-react';
+import { Bell, Languages, LogOut, RefreshCw, ShieldCheck, Wifi, WifiOff, Activity, BookOpen } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { CivicWaterLogo } from './CivicWaterLogo';
@@ -13,6 +13,7 @@ interface GovernmentHeaderProps {
   onSync: () => void;
   onOpenSimulationDemo?: () => void;
   onStartVideoTour?: () => void;
+  onOpenDocs?: () => void;
 }
 
 export function GovernmentHeader({
@@ -22,6 +23,7 @@ export function GovernmentHeader({
   onSync,
   onOpenSimulationDemo: _onOpenSimulationDemo,
   onStartVideoTour,
+  onOpenDocs,
 }: GovernmentHeaderProps) {
   const { user, logout } = useAuth();
   const { lang, setLang } = useLanguage();
@@ -91,6 +93,19 @@ export function GovernmentHeader({
               >
                 <Activity className="h-3.5 w-3.5 text-white" />
                 <span>{bn ? 'ভিডিও ডেমো ট্যুর' : 'Video Demo Tour'}</span>
+              </button>
+            )}
+
+            {onOpenDocs && (
+              <button
+                type="button"
+                onClick={onOpenDocs}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-[#B68A35]/50 bg-[#FFFDF8] hover:bg-[#F5F0E6] px-3 py-2 text-xs font-bold text-[#173D35] transition-all shadow-xs hover:border-[#173D35] focus:outline-none focus:ring-2 focus:ring-[#173D35]"
+                title="Open Live YC Pitch Deck & Technical Documentation (/docs)"
+              >
+                <BookOpen className="h-3.5 w-3.5 text-[#B68A35]" />
+                <span className="hidden xl:inline">{bn ? 'ডকস ও পিচ ডেক' : 'Docs & Pitch'}</span>
+                <span className="xl:hidden">/docs</span>
               </button>
             )}
 

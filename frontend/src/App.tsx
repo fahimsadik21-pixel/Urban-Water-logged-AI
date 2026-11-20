@@ -15,6 +15,7 @@ import { AuthPortal } from './components/AuthPortal';
 import { SimulationDemoModal } from './components/SimulationDemoModal';
 import { SimulationActiveBanner } from './components/SimulationActiveBanner';
 import { VideoDemoTourDock } from './components/VideoDemoTourDock';
+import { LiveDocsModule } from './components/LiveDocsModule';
 import { useAuth } from './contexts/AuthContext';
 import { useLanguage } from './contexts/LanguageContext';
 import { apiFetch } from './lib/api';
@@ -29,10 +30,10 @@ import type {
 } from './types';
 
 const roleNavigation: Record<UserRole, MainTabType[]> = {
-  civic: ['overview', 'public_sim'],
-  analyst: ['overview', 'operations', 'intelligence', 'priority', 'fleet', 'public_sim'],
-  operator: ['overview', 'operations', 'intelligence', 'priority', 'pumps', 'fleet', 'public_sim'],
-  admin: ['overview', 'operations', 'intelligence', 'priority', 'pumps', 'fleet', 'public_sim', 'settings', 'admin'],
+  civic: ['overview', 'docs', 'public_sim'],
+  analyst: ['overview', 'docs', 'operations', 'intelligence', 'priority', 'fleet', 'public_sim'],
+  operator: ['overview', 'docs', 'operations', 'intelligence', 'priority', 'pumps', 'fleet', 'public_sim'],
+  admin: ['overview', 'docs', 'operations', 'intelligence', 'priority', 'pumps', 'fleet', 'public_sim', 'settings', 'admin'],
 };
 
 export default function App() {
@@ -40,6 +41,28 @@ export default function App() {
   const { lang, t } = useLanguage();
 
   const [activeTab, setActiveTab] = useState<MainTabType>('overview');
+  const [isDocsRoute, setIsDocsRoute] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return window.location.pathname === '/docs' || window.location.hash === '#docs';
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      if (typeof window !== 'undefined') {
+        const isDocs = window.location.pathname === '/docs' || window.location.hash === '#docs';
+        setIsDocsRoute(isDocs);
+      }
+    };
+    window.addEventListener('popstate', handleRouteChange);
+    window.addEventListener('hashchange', handleRouteChange);
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+      window.removeEventListener('hashchange', handleRouteChange);
+    };
+  }, []);
+
   const [backendConnected, setBackendConnected] = useState(true);
   const [mapError, setMapError] = useState<string | null>(null);
   const [hotspots, setHotspots] = useState<HotspotFeature[]>(() => {
@@ -360,7 +383,32 @@ export default function App() {
       </div>
     );
   }
-  if (!user) return <AuthPortal />;
+  if (isDocsRoute) {
+    return (
+      <LiveDocsModule
+        onBackToApp={() => {
+          setIsDocsRoute(false);
+          setActiveTab('overview');
+          if (typeof window !== 'undefined') {
+            window.history.pushState({}, '', '/');
+          }
+        }}
+      />
+    );
+  }
+
+  if (!user) {
+    return (
+      <AuthPortal
+        onOpenDocs={() => {
+          setIsDocsRoute(true);
+          if (typeof window !== 'undefined') {
+            window.history.pushState({}, '', '/docs');
+          }
+        }}
+      />
+    );
+  }
 
   return (
     <div className="flex h-screen min-w-0 flex-col bg-[#F5F0E6] text-[#263238]">
@@ -371,6 +419,13 @@ export default function App() {
         onSync={() => void handleManualSync()}
         onOpenSimulationDemo={() => void handleOpenSimulationDemo()}
         onStartVideoTour={() => void handleStartVideoTour()}
+        onOpenDocs={() => {
+          setIsDocsRoute(true);
+          setActiveTab('docs');
+          if (typeof window !== 'undefined') {
+            window.history.pushState({}, '', '/docs');
+          }
+        }}
       />
       {activeSimulationRun && (
         <SimulationActiveBanner
@@ -456,6 +511,17 @@ export default function App() {
           {activeTab === 'fleet' && <IoTCameraFleetView />}
           {activeTab === 'public_sim' && <PublicPortalContainer role={user.role} />}
           {activeTab === 'admin' && <AdminPanel />}
+          {activeTab === 'docs' && (
+            <LiveDocsModule
+              onBackToApp={() => {
+                setIsDocsRoute(false);
+                setActiveTab('overview');
+                if (typeof window !== 'undefined') {
+                  window.history.pushState({}, '', '/');
+                }
+              }}
+            />
+          )}
           {activeTab === 'settings' && <SettingsView />}
         </main>
       </div>

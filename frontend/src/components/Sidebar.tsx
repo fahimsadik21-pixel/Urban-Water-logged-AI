@@ -10,6 +10,7 @@ import {
   LogOut,
   ShieldCheck,
   LayoutDashboard,
+  BookOpen,
 } from 'lucide-react';
 import type { AuthUser } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -24,7 +25,8 @@ export type MainTabType =
   | 'fleet'
   | 'public_sim'
   | 'settings'
-  | 'admin';
+  | 'admin'
+  | 'docs';
 
 interface SidebarProps {
   activeTab: MainTabType;
@@ -88,6 +90,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
       id: 'public_sim',
       label: t('nav.public'),
       icon: Users,
+    },
+    {
+      id: 'docs',
+      label: lang === 'bn' ? 'লাইভ ডকস ও পিচ ডেক' : 'Live Docs & Pitch',
+      icon: BookOpen,
+      badge: 'YC /docs',
+      badgeColor: 'bg-[#B68A35]/25 text-[#E5C378] border border-[#B68A35]/40',
     },
     {
       id: 'settings',
