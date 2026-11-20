@@ -23,6 +23,7 @@ from backend.app.api.v1.routes_local_controller import router as local_controlle
 from backend.app.api.v1.routes_auth import router as auth_router
 from backend.app.api.v1.routes_operator import router as operator_router
 from backend.app.api.v1.routes_admin import router as admin_router
+from backend.app.api.v1.routes_mcp import router as mcp_router
 from backend.app.services.seed_service import seed_database
 
 
@@ -82,6 +83,7 @@ app.include_router(camera_router, prefix=settings.API_V1_STR)
 app.include_router(local_controller_router, prefix=settings.API_V1_STR)
 app.include_router(operator_router, prefix=settings.API_V1_STR)
 app.include_router(admin_router, prefix=settings.API_V1_STR)
+app.include_router(mcp_router, prefix=settings.API_V1_STR + "/mcp", tags=["Model Context Protocol (MCP)"])
 
 # Mount frontend production build if present
 frontend_dist = settings.BASE_DIR / "frontend" / "dist"
